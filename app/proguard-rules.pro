@@ -90,11 +90,11 @@
 -dontwarn org.openjsse.**
 
 # Router
--keep public class com.thoughtworks.car.router.module.**
--keep public class com.thoughtworks.car.router.annotation.**
--keep public class com.thoughtworks.car.router.RouterCore {*;}
--keep public class * extends com.thoughtworks.car.router.Action
--keep @com.thoughtworks.car.router.annotation.Scheme class * {*;}
--keep @com.thoughtworks.car.router.annotation.Service class * {*;}
--keep @com.thoughtworks.car.router.annotation.ServiceImpl class * {*;}
+-keep public class com.thoughtworks.ark.router.module.**
+-keep public class com.thoughtworks.ark.router.annotation.**
+-keep public class com.thoughtworks.ark.router.RouterCore {*;}
+-keep public class * extends com.thoughtworks.ark.router.Action
+-keep @com.thoughtworks.ark.router.annotation.Scheme class * {*;}
+-keep @com.thoughtworks.ark.router.annotation.Service class * {*;}
+-keep @com.thoughtworks.ark.router.annotation.ServiceImpl class * {*;}
 
