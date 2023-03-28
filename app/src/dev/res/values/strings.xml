@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CarApp-team1-dev</string>
+    <string name="develop_menu_label">Develop Menu</string>
+    <string name="develop_menu_disable_hint">Develop Menu has disabled!</string>
+    <string name="design_system_label">Design System</string>
+    <string name="design_system_disable_hint">Design System has disabled!</string>
+</resources>
