@@ -19,6 +19,20 @@
 ## Docs
 [WIKI](https://github.com/TW-Smart-CoE/ARK-WIKI)
 
+## Deploy app to emulator system app
+
+### initialization work (only first time)
+
+1. run `emulator -avd Automotive_API_33 -writable-system` command to launch the emulator with writable file system.
+> NOTE: put the Android SDK emulator command to the environment variable
+
+2. run `adb root` and `adb remount` commands to remount the emulator file system
+3. run `adb shell mkdir /system/app/CarApp-team1` to create the app directory
+
+### in your develop work
+
+run the deploy-system-app.sh shell script
+
 ## LICENSE
 
     Copyright 2022 Thoughtworks, Inc.
