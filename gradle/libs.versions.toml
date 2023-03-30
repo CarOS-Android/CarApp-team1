@@ -1,6 +1,6 @@
 [versions]
 # android
-sdk-min-version = "26"
+sdk-min-version = "33"
 sdk-target-version = "33"
 sdk-compile-version = "33"
 

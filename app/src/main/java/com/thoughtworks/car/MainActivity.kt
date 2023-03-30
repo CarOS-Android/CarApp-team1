@@ -1,5 +1,7 @@
 package com.thoughtworks.car
 
+import android.car.VehiclePropertyIds.HVAC_TEMPERATURE_SET
+import android.car.hardware.property.CarPropertyManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,10 +9,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.thoughtworks.ark.router.Router
 import com.thoughtworks.ark.router.annotation.Scheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @Scheme(Schemes.MAIN)
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    // should move this to ViewModel @XinWang
+    @Inject
+    lateinit var carPropertyManager: CarPropertyManager
 
     private val navView by lazy { findViewById<BottomNavigationView>(R.id.nav_view) }
 
@@ -21,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // should remove this test code @XinWang
+        val temperatureConfig = carPropertyManager.getCarPropertyConfig(HVAC_TEMPERATURE_SET)
+        println("HVAC temperature config: ${temperatureConfig.configArray}")
 
         navView.setOnItemSelectedListener {
             when (it.itemId) {
