@@ -1,4 +1,4 @@
-package com.thoughtworks.car.notifications.ui
+package com.thoughtworks.car.vehicle.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,12 +8,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.thoughtworks.car.notifications.NotificationsViewModel
 import com.thoughtworks.car.ui.theme.Dimensions
 import com.thoughtworks.car.ui.theme.Theme
+import com.thoughtworks.car.vehicle.VehicleViewModel
 
 @Composable
-fun NotificationsScreen(viewModel: NotificationsViewModel = viewModel()) {
+fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
     val uiState = viewModel.state
     Column(
         modifier = Modifier

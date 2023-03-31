@@ -5,7 +5,9 @@ object Schemes {
 
     const val MAIN = "$SCHEME://main"
 
-    const val HOME = "$SCHEME://home"
+    const val VEHICLE = "$SCHEME://vehicle"
+    const val NAVI = "$SCHEME://navi"
     const val DASHBOARD = "$SCHEME://dashboard"
-    const val NOTIFICATIONS = "$SCHEME://notifications"
+    const val MUSIC = "$SCHEME://music"
+    const val SETTINGS = "$SCHEME://settings"
 }

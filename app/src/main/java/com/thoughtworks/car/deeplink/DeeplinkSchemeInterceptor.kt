@@ -9,17 +9,21 @@ import com.thoughtworks.car.Schemes
 
 class DeeplinkSchemeInterceptor : RouterInterceptor {
     override suspend fun shouldIntercept(request: SchemeRequest): Boolean {
-        return request.scheme == Schemes.HOME ||
+        return request.scheme == Schemes.VEHICLE ||
+            request.scheme == Schemes.NAVI ||
             request.scheme == Schemes.DASHBOARD ||
-            request.scheme == Schemes.NOTIFICATIONS
+            request.scheme == Schemes.MUSIC ||
+            request.scheme == Schemes.SETTINGS
     }
 
     override suspend fun intercept(request: SchemeRequest): SchemeRequest {
         val selectedItemId = when (request.scheme) {
-            Schemes.HOME -> R.id.navigation_home
+            Schemes.VEHICLE -> R.id.navigation_vehicle
+            Schemes.NAVI -> R.id.navigation_navi
             Schemes.DASHBOARD -> R.id.navigation_dashboard
-            Schemes.NOTIFICATIONS -> R.id.navigation_notifications
-            else -> R.id.navigation_home
+            Schemes.MUSIC -> R.id.navigation_music
+            Schemes.SETTINGS -> R.id.navigation_settings
+            else -> R.id.navigation_dashboard
         }
 
         return Router.scheme(Schemes.MAIN)

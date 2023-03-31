@@ -1,4 +1,4 @@
-package com.thoughtworks.car.notifications.ui
+package com.thoughtworks.car.music.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import com.thoughtworks.ark.router.annotation.Scheme
 import com.thoughtworks.car.Schemes
 import com.thoughtworks.car.ui.theme.Theme
 
-@Scheme(Schemes.NOTIFICATIONS)
-class NotificationsFragment : Fragment() {
+@Scheme(Schemes.MUSIC)
+class MusicFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,7 +19,7 @@ class NotificationsFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setContent {
             Theme {
-                NotificationsScreen()
+                MusicScreen()
             }
         }
     }
