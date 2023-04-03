@@ -18,9 +18,6 @@ import com.thoughtworks.car.dashboard.ui.navi.NaviView
 import com.thoughtworks.car.ui.theme.Dimensions
 import com.thoughtworks.car.ui.theme.Theme
 
-const val DOOR_VIEW_WEIGHT = 3f
-const val NAVI_VIEW_WEIGHT = 2f
-
 @Composable
 fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
@@ -32,7 +29,10 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
     ) {
         DoorView(
             modifier = Modifier.weight(DOOR_VIEW_WEIGHT),
-            doorUiState = uiState.doorUiState
+            doorUiState = uiState.doorUiState,
+            toggleSeatDoors = { viewModel.doorUseCase.toggleSeatDoors() },
+            toggleHoodDoor = { viewModel.doorUseCase.toggleHoodDoor() },
+            toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
         )
         Spacer(modifier = Modifier.width(80.dp))
         NaviView(
@@ -41,3 +41,6 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
         )
     }
 }
+
+private const val DOOR_VIEW_WEIGHT = 3f
+private const val NAVI_VIEW_WEIGHT = 2f

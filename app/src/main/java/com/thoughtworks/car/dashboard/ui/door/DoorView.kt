@@ -1,6 +1,7 @@
 package com.thoughtworks.car.dashboard.ui.door
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
@@ -19,7 +20,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun DoorView(modifier: Modifier = Modifier, doorUiState: StateFlow<DoorUiState>) {
+fun DoorView(
+    modifier: Modifier = Modifier,
+    doorUiState: StateFlow<DoorUiState>,
+    toggleSeatDoors: () -> Unit,
+    toggleHoodDoor: () -> Unit,
+    toggleRearDoor: () -> Unit
+) {
     val uiState by doorUiState.collectAsState()
     ConstraintLayout(modifier = modifier) {
         val car = createRef()
@@ -31,7 +38,7 @@ fun DoorView(modifier: Modifier = Modifier, doorUiState: StateFlow<DoorUiState>)
                     top.linkTo(parent.top, margin = 70.dp)
                     end.linkTo(parent.end, margin = 70.dp)
                 },
-            onClick = { /*TODO*/ }
+            onClick = { toggleRearDoor() }
         ) {
             Icon(
                 painter = painterResource(id = if (uiState.doorRearState) R.drawable.ic_unlock else R.drawable.ic_lock),
@@ -58,7 +65,7 @@ fun DoorView(modifier: Modifier = Modifier, doorUiState: StateFlow<DoorUiState>)
                     top.linkTo(parent.top, margin = 100.dp)
                     start.linkTo(parent.start, margin = 80.dp)
                 },
-            onClick = { /*TODO*/ }
+            onClick = { toggleHoodDoor() }
         ) {
             Icon(
                 painter = painterResource(id = if (uiState.doorHoodState) R.drawable.ic_unlock else R.drawable.ic_lock),
@@ -69,16 +76,23 @@ fun DoorView(modifier: Modifier = Modifier, doorUiState: StateFlow<DoorUiState>)
 
         IconButton(
             modifier = Modifier
-                .size(50.dp)
+                .width(104.dp)
+                .height(50.dp)
                 .constrainAs(doorButton) {
                     top.linkTo(car.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-            onClick = { /*TODO*/ }
+            onClick = { toggleSeatDoors() }
         ) {
             Icon(
-                painter = painterResource(id = if (uiState.doorState) R.drawable.ic_unlock else R.drawable.ic_lock),
+                painter = painterResource(
+                    id = if (uiState.doorSeatLock) {
+                        R.drawable.ic_lock_large
+                    } else {
+                        R.drawable.ic_unlock_large
+                    }
+                ),
                 tint = Color.Unspecified,
                 contentDescription = ""
             )
@@ -92,11 +106,14 @@ fun PreviewDoorView() {
     DoorView(
         doorUiState = MutableStateFlow(
             DoorUiState(
-                doorState = true,
+                doorSeatLock = true,
                 doorHoodState = false,
                 doorRearState = false,
                 car = R.drawable.ic_car
             )
-        )
+        ),
+        toggleSeatDoors = {},
+        toggleHoodDoor = {},
+        toggleRearDoor = {}
     )
 }

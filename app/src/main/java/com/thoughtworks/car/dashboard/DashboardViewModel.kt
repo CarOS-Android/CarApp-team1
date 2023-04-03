@@ -6,9 +6,9 @@ import com.thoughtworks.car.dashboard.ui.door.DoorUseCase
 import com.thoughtworks.car.dashboard.ui.navi.NaviUiState
 import com.thoughtworks.car.dashboard.ui.navi.NaviUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 data class DashboardUiState(
     val doorUiState: StateFlow<DoorUiState>,
@@ -18,7 +18,7 @@ data class DashboardUiState(
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    doorUseCase: DoorUseCase,
+    val doorUseCase: DoorUseCase,
     naviUseCase: NaviUseCase,
     // add more useCase here
 ) : ViewModel() {

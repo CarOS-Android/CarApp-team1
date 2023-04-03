@@ -33,7 +33,7 @@ androidApplication {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("android.car.jar"))))
 
     implementation(project(":ui"))
     implementation(project(":core"))
