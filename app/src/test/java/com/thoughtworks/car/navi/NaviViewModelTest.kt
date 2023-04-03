@@ -6,7 +6,7 @@ import org.junit.Test
 class NaviViewModelTest {
 
     @Test
-    fun shouldInitialHomeWhenCreated() {
+    fun shouldInitialNaviWhenCreated() {
         // given
         val viewModel = NaviViewModel()
 
