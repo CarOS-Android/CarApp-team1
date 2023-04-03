@@ -49,6 +49,7 @@ dependencies {
     kapt(libs.router.compiler)
 
     implementation(libs.bundles.coil)
+    implementation(libs.chip.navigation)
 
     testImplementation(project(":core-testing"))
     testImplementation(libs.junit4)

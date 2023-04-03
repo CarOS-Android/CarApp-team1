@@ -1,18 +1,19 @@
-package com.thoughtworks.car.home
+package com.thoughtworks.car.navi
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-class HomeViewModelTest {
+class NaviViewModelTest {
+
     @Test
     fun shouldInitialHomeWhenCreated() {
         // given
-        val viewModel = HomeViewModel()
+        val viewModel = NaviViewModel()
 
         // when
         val item = viewModel.uiState.value
 
         // then
-        assertThat(item.label).isEqualTo("This is home Fragment")
+        assertThat(item.label).isEqualTo("This is Navi Fragment")
     }
 }
