@@ -9,12 +9,12 @@ import com.thoughtworks.car.R
 import com.thoughtworks.car.core.di.ApplicationScope
 import com.thoughtworks.car.core.logging.Logger
 import com.thoughtworks.car.core.utils.WhileUiSubscribed
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 data class DoorUiState(
     val doorSeatLock: Boolean = true,

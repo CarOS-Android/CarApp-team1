@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,7 +18,6 @@ import com.thoughtworks.car.ui.theme.Theme
 
 @Composable
 fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +26,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
     ) {
         DoorView(
             modifier = Modifier.weight(DOOR_VIEW_WEIGHT),
-            doorUiState = uiState.doorUiState,
+            doorUiState = viewModel.doorUseCase.uiState,
             toggleSeatDoors = { viewModel.doorUseCase.toggleSeatDoors() },
             toggleHoodDoor = { viewModel.doorUseCase.toggleHoodDoor() },
             toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
@@ -37,7 +34,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
         Spacer(modifier = Modifier.width(80.dp))
         NaviView(
             modifier = Modifier.weight(NAVI_VIEW_WEIGHT),
-            naviUiState = uiState.naviUiState
+            naviUiState = viewModel.naviUseCase.uiState
         )
     }
 }
