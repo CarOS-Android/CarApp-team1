@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/profileView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dimension_48"
+        android:layout_height="@dimen/dimension_48"
         android:layout_marginTop="@dimen/dimension_24"
         android:background="@color/black_90"
         android:src="@drawable/ic_profile"
@@ -24,7 +24,8 @@
         android:layout_height="0dp"
         android:background="@color/black_90"
         android:elevation="@dimen/dimension_2"
-        app:cnb_iconSize="@dimen/dimension_48"
+        android:paddingVertical="@dimen/dimension_16"
+        app:cnb_iconSize="@dimen/dimension_44"
         app:cnb_menuResource="@menu/nav_menu"
         app:cnb_orientationMode="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
