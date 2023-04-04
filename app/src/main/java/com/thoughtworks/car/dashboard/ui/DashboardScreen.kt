@@ -1,9 +1,11 @@
 package com.thoughtworks.car.dashboard.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -12,7 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.car.dashboard.DashboardViewModel
 import com.thoughtworks.car.dashboard.ui.door.DoorView
+import com.thoughtworks.car.dashboard.ui.media.MediaView
 import com.thoughtworks.car.dashboard.ui.navi.NaviView
+import com.thoughtworks.car.dashboard.ui.status.StatusView
+import com.thoughtworks.car.dashboard.ui.time.TimeView
+import com.thoughtworks.car.dashboard.ui.voice.VoiceView
 import com.thoughtworks.car.ui.theme.Dimensions
 import com.thoughtworks.car.ui.theme.Theme
 
@@ -24,18 +30,27 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             .background(color = Theme.colors.background)
             .padding(horizontal = Dimensions.standardPadding)
     ) {
-        DoorView(
-            modifier = Modifier.weight(DOOR_VIEW_WEIGHT),
-            doorUiState = viewModel.doorUseCase.uiState,
-            toggleSeatDoors = { viewModel.doorUseCase.toggleSeatDoors() },
-            toggleHoodDoor = { viewModel.doorUseCase.toggleHoodDoor() },
-            toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
-        )
+        Column(modifier = Modifier.weight(DOOR_VIEW_WEIGHT)) {
+            Row {
+                TimeView(timeUiState = viewModel.timeUseCase.uiState)
+                Spacer(modifier = Modifier.width(8.dp))
+                VoiceView(voiceUiState = viewModel.voiceUseCase.uiState)
+            }
+            DoorView(
+                doorUiState = viewModel.doorUseCase.uiState,
+                toggleSeatDoors = { viewModel.doorUseCase.toggleSeatDoors() },
+                toggleHoodDoor = { viewModel.doorUseCase.toggleHoodDoor() },
+                toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
+            )
+        }
         Spacer(modifier = Modifier.width(80.dp))
-        NaviView(
-            modifier = Modifier.weight(NAVI_VIEW_WEIGHT),
-            naviUiState = viewModel.naviUseCase.uiState
-        )
+        Column(modifier = Modifier.weight(NAVI_VIEW_WEIGHT)) {
+            NaviView(naviUiState = viewModel.naviUseCase.uiState)
+            Spacer(modifier = Modifier.height(8.dp))
+            MediaView(mediaUiState = viewModel.mediaUseCase.uiState)
+            Spacer(modifier = Modifier.height(8.dp))
+            StatusView(statusUiState = viewModel.statusUseCase.uiState)
+        }
     }
 }
 
