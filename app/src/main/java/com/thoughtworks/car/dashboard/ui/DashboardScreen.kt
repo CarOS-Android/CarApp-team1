@@ -16,6 +16,7 @@ import com.thoughtworks.car.dashboard.DashboardViewModel
 import com.thoughtworks.car.dashboard.ui.door.DoorView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
 import com.thoughtworks.car.dashboard.ui.navi.NaviView
+import com.thoughtworks.car.dashboard.ui.status.StatusView
 import com.thoughtworks.car.dashboard.ui.time.TimeView
 import com.thoughtworks.car.dashboard.ui.voice.VoiceView
 import com.thoughtworks.car.ui.theme.Dimensions
@@ -45,8 +46,10 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
         Spacer(modifier = Modifier.width(80.dp))
         Column(modifier = Modifier.weight(NAVI_VIEW_WEIGHT)) {
             NaviView(naviUiState = viewModel.naviUseCase.uiState)
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             MediaView(mediaUiState = viewModel.mediaUseCase.uiState)
+            Spacer(modifier = Modifier.height(8.dp))
+            StatusView(statusUiState = viewModel.statusUseCase.uiState)
         }
     }
 }
