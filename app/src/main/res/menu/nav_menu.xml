@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_vehicle"
         android:icon="@drawable/ic_vehicle"
-        android:title="" />
+        android:title=""
+        app:cnb_backgroundColor="@color/black_90" />
 
     <item
         android:id="@+id/navigation_navi"
         android:icon="@drawable/ic_navigation"
-        android:title="" />
+        android:title=""
+        app:cnb_backgroundColor="@color/black_90" />
 
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard"
-        android:title=""/>
+        android:title=""
+        app:cnb_backgroundColor="@color/black_90" />
 
     <item
         android:id="@+id/navigation_music"
         android:icon="@drawable/ic_music"
-        android:title="" />
+        android:title=""
+        app:cnb_backgroundColor="@color/black_90" />
 
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
-        android:title="" />
+        android:title=""
+        app:cnb_backgroundColor="@color/black_90" />
 
 </menu>
