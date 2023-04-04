@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.car.dashboard.DashboardViewModel
 import com.thoughtworks.car.dashboard.ui.door.DoorView
+import com.thoughtworks.car.dashboard.ui.hvac.HvacView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
 import com.thoughtworks.car.dashboard.ui.navi.NaviView
 import com.thoughtworks.car.dashboard.ui.status.StatusView
@@ -42,6 +43,14 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 toggleHoodDoor = { viewModel.doorUseCase.toggleHoodDoor() },
                 toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row {
+                HvacView(
+                    hvacUiState = viewModel.hvacUseCase.uiState,
+//                    setLeftTemperature = { t -> viewModel.hvacUseCase.setHvacLeftTemperature(t) },
+//                    setRightTemperature = { t -> viewModel.hvacUseCase.setHvacRightTemperature(t) },
+                )
+            }
         }
         Spacer(modifier = Modifier.width(80.dp))
         Column(modifier = Modifier.weight(NAVI_VIEW_WEIGHT)) {

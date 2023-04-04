@@ -33,9 +33,9 @@ fun DoorView(
         val (doorButton, doorHoodButton, doorRearButton) = createRefs()
         IconButton(
             modifier = Modifier
-                .size(50.dp)
+                .size(40.dp)
                 .constrainAs(doorRearButton) {
-                    top.linkTo(parent.top, margin = 70.dp)
+                    top.linkTo(parent.top, margin = 30.dp)
                     end.linkTo(parent.end, margin = 70.dp)
                 },
             onClick = { toggleRearDoor() }
@@ -60,9 +60,9 @@ fun DoorView(
 
         IconButton(
             modifier = Modifier
-                .size(50.dp)
+                .size(40.dp)
                 .constrainAs(doorHoodButton) {
-                    top.linkTo(parent.top, margin = 100.dp)
+                    top.linkTo(parent.top, margin = 60.dp)
                     start.linkTo(parent.start, margin = 80.dp)
                 },
             onClick = { toggleHoodDoor() }
@@ -76,8 +76,8 @@ fun DoorView(
 
         IconButton(
             modifier = Modifier
-                .width(104.dp)
-                .height(50.dp)
+                .width(80.dp)
+                .height(40.dp)
                 .constrainAs(doorButton) {
                     top.linkTo(car.bottom)
                     start.linkTo(parent.start)
