@@ -3,6 +3,7 @@ package com.thoughtworks.car.dashboard.ui.ignition
 import android.car.VehicleIgnitionState.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,8 +22,9 @@ fun IgnitionView(
     ignitionUiState: StateFlow<Int>
 ) {
     val uiState by ignitionUiState.collectAsState()
-    Box(modifier = modifier.size(140.dp)) {
+    Box(modifier = modifier.size(130.dp)) {
         Image(
+            modifier = modifier.offset(y = (-2).dp, x = 30.dp),
             painter = painterResource(
                 id = when (uiState) {
                     ON, START, ACC -> R.drawable.ic_engine_start

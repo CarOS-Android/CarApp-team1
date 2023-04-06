@@ -49,6 +49,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
 //                    setLeftTemperature = { t -> viewModel.hvacUseCase.setHvacLeftTemperature(t) },
 //                    setRightTemperature = { t -> viewModel.hvacUseCase.setHvacRightTemperature(t) },
                 )
+                Spacer(modifier = Modifier.weight(1f))
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxHeight().padding(start = 40.dp)
