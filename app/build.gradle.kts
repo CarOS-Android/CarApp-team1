@@ -50,6 +50,7 @@ dependencies {
 
     implementation(libs.bundles.coil)
     implementation(libs.chip.navigation)
+    implementation(libs.blind.hmi.ui)
 
     testImplementation(project(":core-testing"))
     testImplementation(libs.junit4)
