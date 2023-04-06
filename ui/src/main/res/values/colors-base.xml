@@ -36,11 +36,11 @@
     <color name="grey_100">#FFF5F5F5</color>
     <color name="grey_200">#FFEEEEEE</color>
     <color name="grey_300" tools:ignore="MissingDefaultResource">#FFE0E0E0</color>
-    <color name="grey_400" tools:ignore="MissingDefaultResource">#FFBDBDBD</color>
+    <color name="grey_400" tools:ignore="MissingDefaultResource">#A0AABC</color>
     <color name="grey_500" tools:ignore="MissingDefaultResource">#FF9E9E9E</color>
     <color name="grey_600" tools:ignore="MissingDefaultResource">#FF757575</color>
     <color name="grey_700">#FF616161</color>
-    <color name="grey_800" tools:ignore="MissingDefaultResource">#FF424242</color>
+    <color name="grey_800" tools:ignore="MissingDefaultResource">#4E505E</color>
     <color name="grey_900" tools:ignore="MissingDefaultResource">#FF212121</color>
 
 </resources>

@@ -14,9 +14,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+const val DEFAULT_TEMPERATURE = 16F
+
 data class HvacUiState(
-    val leftTemperature: String = "",
-    val rightTemperature: String = "",
+    val leftTemperature: Float = DEFAULT_TEMPERATURE,
+    val rightTemperature: Float = DEFAULT_TEMPERATURE,
 )
 
 class HvacUseCase @Inject constructor(
@@ -24,14 +26,14 @@ class HvacUseCase @Inject constructor(
     private val carPropertyManager: CarPropertyManager
 ) {
 
-    private val _leftTemperature: MutableStateFlow<Float?> = MutableStateFlow(null)
-    private val _rightTemperature: MutableStateFlow<Float?> = MutableStateFlow(null)
+    private val _leftTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
+    private val _rightTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
 
     val uiState: StateFlow<HvacUiState> = combine(
         _leftTemperature,
         _rightTemperature
     ) { leftTemperature, rightTemperature ->
-        HvacUiState("$leftTemperature\u00b0", "$rightTemperature\u00b0")
+        HvacUiState(leftTemperature, rightTemperature)
     }.stateIn(coroutineScope, WhileSubscribed(), HvacUiState())
 
     private var hvacTemperatureListener = object : CarPropertyManager.CarPropertyEventCallback {
@@ -66,6 +68,8 @@ class HvacUseCase @Inject constructor(
             )
         } catch (e: IllegalArgumentException) {
             Logger.e("set HVAC left temperature fail", e)
+        } catch (e: SecurityException) {
+            Logger.e("set HVAC left temperature fail", e)
         }
     }
 
@@ -78,13 +82,15 @@ class HvacUseCase @Inject constructor(
             )
         } catch (e: IllegalArgumentException) {
             Logger.e("set HVAC right temperature fail", e)
+        } catch (e: SecurityException) {
+            Logger.e("set HVAC right temperature fail", e)
         }
     }
 
     companion object {
         private const val HVAC_AREA_LEFT = VehicleAreaSeat.SEAT_ROW_1_LEFT or
-            VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
+                VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
         private const val HVAC_AREA_RIGHT = VehicleAreaSeat.SEAT_ROW_1_RIGHT or
-            VehicleAreaSeat.SEAT_ROW_2_RIGHT
+                VehicleAreaSeat.SEAT_ROW_2_RIGHT
     }
 }

@@ -35,7 +35,7 @@ fun DoorView(
             modifier = Modifier
                 .size(40.dp)
                 .constrainAs(doorRearButton) {
-                    top.linkTo(parent.top, margin = 30.dp)
+                    top.linkTo(parent.top, margin = 20.dp)
                     end.linkTo(parent.end, margin = 70.dp)
                 },
             onClick = { toggleRearDoor() }
@@ -62,7 +62,7 @@ fun DoorView(
             modifier = Modifier
                 .size(40.dp)
                 .constrainAs(doorHoodButton) {
-                    top.linkTo(parent.top, margin = 60.dp)
+                    top.linkTo(parent.top, margin = 50.dp)
                     start.linkTo(parent.start, margin = 80.dp)
                 },
             onClick = { toggleHoodDoor() }
