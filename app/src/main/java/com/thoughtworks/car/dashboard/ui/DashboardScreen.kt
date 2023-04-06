@@ -51,16 +51,15 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxHeight().padding(start = 40.dp)
+                    modifier = Modifier.fillMaxHeight()
                 ) {
-                    // hand brake view
                     ParkingBrakeView(
                         parkingBrakeUiState = viewModel.parkingBrakeUseCase.uiState,
                         toggleParkingBrake = {
                             viewModel.parkingBrakeUseCase.toggleParkingBrake()
                         }
                     )
+                    Spacer(modifier = Modifier.weight(1f))
                     AutoHoldView(
                         autoHoldUiState = viewModel.autoHoldUseCase.uiState,
                         toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold() }
