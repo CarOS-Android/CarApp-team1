@@ -1,18 +1,13 @@
 package com.thoughtworks.car.dashboard.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.car.dashboard.DashboardViewModel
+import com.thoughtworks.car.dashboard.ui.brake.AutoHoldView
 import com.thoughtworks.car.dashboard.ui.door.DoorView
 import com.thoughtworks.car.dashboard.ui.hvac.HvacView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
@@ -50,6 +45,20 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
 //                    setLeftTemperature = { t -> viewModel.hvacUseCase.setHvacLeftTemperature(t) },
 //                    setRightTemperature = { t -> viewModel.hvacUseCase.setHvacRightTemperature(t) },
                 )
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxHeight().padding(start = 40.dp)
+                ) {
+                    // hand brake view
+                    AutoHoldView(
+                        autoHoldUiState = viewModel.autoHoldUseCase.uiState,
+                        toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold()}
+                    )
+                    AutoHoldView(
+                        autoHoldUiState = viewModel.autoHoldUseCase.uiState,
+                        toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold()}
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.width(80.dp))
