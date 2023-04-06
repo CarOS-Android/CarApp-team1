@@ -21,6 +21,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven {
+            setUrl("http://10.205.215.4:8081/repository/maven-releases/")
+            isAllowInsecureProtocol = true
+        }
     }
 }
 
