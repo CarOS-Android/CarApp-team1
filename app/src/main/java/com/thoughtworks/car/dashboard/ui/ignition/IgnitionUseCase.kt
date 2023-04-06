@@ -39,15 +39,14 @@ class IgnitionUseCase @Inject constructor(
         override fun onErrorEvent(propId: Int, zone: Int) {
             Logger.w("Received error car property event, propId=$propId")
         }
-
     }
 
     init {
         Logger.i(
             "Car ignition default state property is: ${
-                carPropertyManager.getIntProperty(
-                    IGNITION_STATE, VEHICLE_AREA_TYPE_GLOBAL
-                )
+            carPropertyManager.getIntProperty(
+                IGNITION_STATE, VEHICLE_AREA_TYPE_GLOBAL
+            )
             }"
         )
         carPropertyManager.registerCallback(
@@ -56,5 +55,4 @@ class IgnitionUseCase @Inject constructor(
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
     }
-
 }
