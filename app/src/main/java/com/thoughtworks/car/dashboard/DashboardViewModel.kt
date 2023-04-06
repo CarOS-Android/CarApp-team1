@@ -2,6 +2,7 @@ package com.thoughtworks.car.dashboard
 
 import androidx.lifecycle.ViewModel
 import com.thoughtworks.car.dashboard.ui.brake.AutoHoldUseCase
+import com.thoughtworks.car.dashboard.ui.brake.ParkingBrakeUseCase
 import com.thoughtworks.car.dashboard.ui.door.DoorUseCase
 import com.thoughtworks.car.dashboard.ui.hvac.HvacUseCase
 import com.thoughtworks.car.dashboard.ui.media.MediaUseCase
@@ -21,6 +22,7 @@ class DashboardViewModel @Inject constructor(
     val naviUseCase: NaviUseCase,
     val mediaUseCase: MediaUseCase,
     val statusUseCase: StatusUseCase,
-    val autoHoldUseCase: AutoHoldUseCase
+    val autoHoldUseCase: AutoHoldUseCase,
+    val parkingBrakeUseCase: ParkingBrakeUseCase
     // add more useCase here
 ) : ViewModel()

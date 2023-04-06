@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.car.dashboard.DashboardViewModel
 import com.thoughtworks.car.dashboard.ui.brake.AutoHoldView
+import com.thoughtworks.car.dashboard.ui.brake.ParkingBrakeView
 import com.thoughtworks.car.dashboard.ui.door.DoorView
 import com.thoughtworks.car.dashboard.ui.hvac.HvacView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
@@ -50,9 +51,9 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                     modifier = Modifier.fillMaxHeight().padding(start = 40.dp)
                 ) {
                     // hand brake view
-                    AutoHoldView(
-                        autoHoldUiState = viewModel.autoHoldUseCase.uiState,
-                        toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold()}
+                    ParkingBrakeView(
+                        parkingBrakeUiState = viewModel.parkingBrakeUseCase.uiState,
+                        toggleParkingBrake = { viewModel.parkingBrakeUseCase.toggleParkingBrake()}
                     )
                     AutoHoldView(
                         autoHoldUiState = viewModel.autoHoldUseCase.uiState,
