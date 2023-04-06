@@ -6,11 +6,9 @@ import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.car.core.di.ApplicationScope
 import com.thoughtworks.car.core.logging.Logger
-import com.thoughtworks.car.core.utils.WhileUiSubscribed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 data class AutoHoldUiState(
@@ -21,15 +19,15 @@ class AutoHoldUseCase @Inject constructor(
     @ApplicationScope private val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager
 ) {
-    private val _autoHoldState: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val uiState: StateFlow<AutoHoldUiState> = MutableStateFlow(AutoHoldUiState(true))
-        .stateIn(coroutineScope, WhileUiSubscribed, AutoHoldUiState())
+    private val _uiState: MutableStateFlow<AutoHoldUiState> = MutableStateFlow(AutoHoldUiState())
+    val uiState: StateFlow<AutoHoldUiState> = _uiState
 
     private var autoHoldListener = object : CarPropertyManager.CarPropertyEventCallback {
 
         override fun onChangeEvent(value: CarPropertyValue<Any>) {
             Logger.i("Car auto hold property value changed $value")
-            _autoHoldState.value = value.value as Boolean
+            val autoHoldState = value.value as Boolean
+            _uiState.value= AutoHoldUiState(autoHoldState)
         }
 
         override fun onErrorEvent(propId: Int, zone: Int) {
