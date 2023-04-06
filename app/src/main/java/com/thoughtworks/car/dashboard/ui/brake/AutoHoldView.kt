@@ -1,11 +1,7 @@
 package com.thoughtworks.car.dashboard.ui.brake
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,7 +24,7 @@ fun AutoHoldView(
     val uiState by autoHoldUiState.collectAsState()
 
     Box(
-        modifier = Modifier.clickable { toggleAutoHold() },
+        modifier = modifier.clickable { toggleAutoHold() },
         contentAlignment = Alignment.Center,
     ) {
         Image(
@@ -40,12 +36,12 @@ fun AutoHoldView(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(id = R.drawable.autohold),
-                contentDescription = null
+                painter = painterResource(id = R.drawable.auto_hold),
+                contentDescription = null,
             )
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 3.dp))
             Image(
-                painter = painterResource(id = if (uiState.autoHoldState) R.drawable.auto_hold_light else R.drawable.auto_hold_grey),
+                painter = painterResource(id = if (uiState.autoHoldState) R.drawable.auto_hold_on else R.drawable.auto_hold_off),
                 contentDescription = null,
             )
         }
