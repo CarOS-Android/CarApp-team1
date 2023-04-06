@@ -29,7 +29,7 @@ fun ParkingBrakeView(
         Image(painter =  painterResource(id = R.drawable.parking_barke_background), contentDescription = null)
         Column(horizontalAlignment = Alignment.CenterHorizontally,) {
             Image(painter = painterResource(id = R.drawable.parking_brake_p), contentDescription = null )
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 3.dp))
             Image(
                 painter = painterResource(id = if (uiState.parkingBrakeUiState) R.drawable.auto_hold_on
                 else R.drawable.auto_hold_off),
