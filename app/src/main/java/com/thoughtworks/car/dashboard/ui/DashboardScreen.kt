@@ -13,6 +13,7 @@ import com.thoughtworks.car.dashboard.ui.door.DoorView
 import com.thoughtworks.car.dashboard.ui.hvac.HvacView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
 import com.thoughtworks.car.dashboard.ui.navi.NaviView
+import com.thoughtworks.car.dashboard.ui.ignition.IgnitionView
 import com.thoughtworks.car.dashboard.ui.status.StatusView
 import com.thoughtworks.car.dashboard.ui.time.TimeView
 import com.thoughtworks.car.dashboard.ui.voice.VoiceView
@@ -32,6 +33,8 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 TimeView(timeUiState = viewModel.timeUseCase.uiState)
                 Spacer(modifier = Modifier.width(8.dp))
                 VoiceView(voiceUiState = viewModel.voiceUseCase.uiState)
+                Spacer(modifier = Modifier.weight(1f))
+                IgnitionView(ignitionUiState = viewModel.ignitionUseCase.uiState)
             }
             DoorView(
                 doorUiState = viewModel.doorUseCase.uiState,
