@@ -14,7 +14,6 @@ import com.thoughtworks.car.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-
 @Composable
 fun AutoHoldView(
     modifier: Modifier = Modifier,
@@ -41,12 +40,17 @@ fun AutoHoldView(
             )
             Spacer(modifier = Modifier.padding(vertical = 3.dp))
             Image(
-                painter = painterResource(id = if (uiState.autoHoldState) R.drawable.auto_hold_on else R.drawable.auto_hold_off),
+                painter = painterResource(
+                    id = if (uiState.autoHoldState) {
+                        R.drawable.auto_hold_on
+                    } else {
+                        R.drawable.auto_hold_off
+                    }
+                ),
                 contentDescription = null,
             )
         }
     }
-
 }
 
 @Preview(showBackground = true)
@@ -54,9 +58,9 @@ fun AutoHoldView(
 fun PreviewAutoHoldView() {
     AutoHoldView(
         autoHoldUiState = MutableStateFlow(
-            AutoHoldUiState(
-            )
+            AutoHoldUiState()
         ),
-        toggleAutoHold = {}
+        toggleAutoHold = {
+        }
     )
 }

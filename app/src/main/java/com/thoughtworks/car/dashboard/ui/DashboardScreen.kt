@@ -11,9 +11,9 @@ import com.thoughtworks.car.dashboard.ui.brake.AutoHoldView
 import com.thoughtworks.car.dashboard.ui.brake.ParkingBrakeView
 import com.thoughtworks.car.dashboard.ui.door.DoorView
 import com.thoughtworks.car.dashboard.ui.hvac.HvacView
+import com.thoughtworks.car.dashboard.ui.ignition.IgnitionView
 import com.thoughtworks.car.dashboard.ui.media.MediaView
 import com.thoughtworks.car.dashboard.ui.navi.NaviView
-import com.thoughtworks.car.dashboard.ui.ignition.IgnitionView
 import com.thoughtworks.car.dashboard.ui.status.StatusView
 import com.thoughtworks.car.dashboard.ui.time.TimeView
 import com.thoughtworks.car.dashboard.ui.voice.VoiceView
@@ -57,11 +57,13 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                     // hand brake view
                     ParkingBrakeView(
                         parkingBrakeUiState = viewModel.parkingBrakeUseCase.uiState,
-                        toggleParkingBrake = { viewModel.parkingBrakeUseCase.toggleParkingBrake()}
+                        toggleParkingBrake = {
+                            viewModel.parkingBrakeUseCase.toggleParkingBrake()
+                        }
                     )
                     AutoHoldView(
                         autoHoldUiState = viewModel.autoHoldUseCase.uiState,
-                        toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold()}
+                        toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold() }
                     )
                 }
             }
