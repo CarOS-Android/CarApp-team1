@@ -25,44 +25,31 @@ fun StatusView(
 ) {
     val uiState by statusUiState.collectAsState()
 
+    val configurations = listOf(
+        StatusConfigration(
+            R.drawable.ic_window_lock,
+            R.drawable.ic_window_unlock,
+            uiState.windowLockState,
+            toggleWindowLock
+        ),
+        StatusConfigration(R.drawable.ic_fragrance, R.drawable.ic_fragrance, true) {},
+        StatusConfigration(R.drawable.ic_wifi, R.drawable.ic_wifi, true) {},
+        StatusConfigration(R.drawable.ic_bluetooth, R.drawable.ic_bluetooth, true) {},
+        StatusConfigration(R.drawable.ic_cellular, R.drawable.ic_cellular, true) {},
+    )
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        StatusButton(
-            iconOn = R.drawable.ic_window_lock,
-            iconOff = R.drawable.ic_window_unlock,
-            status = uiState.windowLockState
-        ) {
-            toggleWindowLock()
-        }
-
-        StatusButton(
-            iconOn = R.drawable.ic_fragrance,
-            iconOff = R.drawable.ic_fragrance,
-            status = true
-        ) {
-        }
-
-        StatusButton(
-            iconOn = R.drawable.ic_wifi,
-            iconOff = R.drawable.ic_wifi,
-            status = true
-        ) {
-        }
-
-        StatusButton(
-            iconOn = R.drawable.ic_bluetooth,
-            iconOff = R.drawable.ic_bluetooth,
-            status = true
-        ) {
-        }
-
-        StatusButton(
-            iconOn = R.drawable.ic_cellular,
-            iconOff = R.drawable.ic_cellular,
-            status = true
-        ) {
+        for (configuration in configurations) {
+            StatusButton(
+                iconOn = configuration.iconOn,
+                iconOff = configuration.iconOff,
+                status = configuration.status
+            ) {
+                configuration.onClick()
+            }
         }
     }
 }

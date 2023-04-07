@@ -4,6 +4,7 @@ import android.car.VehicleAreaWindow
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import androidx.annotation.DrawableRes
 import com.thoughtworks.car.core.logging.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,6 +12,13 @@ import javax.inject.Inject
 
 data class StatusUiState(
     val windowLockState: Boolean = true,
+)
+
+data class StatusConfigration(
+    @DrawableRes val iconOn: Int,
+    @DrawableRes val iconOff: Int,
+    val status: Boolean,
+    val onClick: () -> Unit
 )
 
 class StatusUseCase @Inject constructor(
