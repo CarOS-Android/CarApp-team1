@@ -5,6 +5,7 @@ import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.car.core.logging.Logger
+import com.thoughtworks.car.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -15,7 +16,7 @@ data class AutoHoldUiState(
 
 class AutoHoldUseCase @Inject constructor(
     private val carPropertyManager: CarPropertyManager
-) {
+) : BaseUseCase {
     private val _uiState: MutableStateFlow<AutoHoldUiState> = MutableStateFlow(AutoHoldUiState())
     val uiState: StateFlow<AutoHoldUiState> = _uiState
 
@@ -45,7 +46,10 @@ class AutoHoldUseCase @Inject constructor(
             VehiclePropertyIds.PARKING_BRAKE_AUTO_APPLY,
             VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL
         )
-
         Logger.i("Car auto hold property value is $on")
+    }
+
+    override fun onCleared() {
+        carPropertyManager.unregisterCallback(autoHoldListener)
     }
 }

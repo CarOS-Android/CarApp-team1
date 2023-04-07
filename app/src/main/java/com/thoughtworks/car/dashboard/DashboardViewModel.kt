@@ -24,5 +24,18 @@ class DashboardViewModel @Inject constructor(
     val statusUseCase: StatusUseCase,
     val autoHoldUseCase: AutoHoldUseCase,
     val parkingBrakeUseCase: ParkingBrakeUseCase
-    // add more useCase here
-) : ViewModel()
+) : ViewModel() {
+
+    override fun onCleared() {
+        timeUseCase.onCleared()
+        voiceUseCase.onCleared()
+        ignitionUseCase.onCleared()
+        doorUseCase.onCleared()
+        naviUseCase.onCleared()
+        mediaUseCase.onCleared()
+        statusUseCase.onCleared()
+        autoHoldUseCase.onCleared()
+        parkingBrakeUseCase.onCleared()
+        super.onCleared()
+    }
+}

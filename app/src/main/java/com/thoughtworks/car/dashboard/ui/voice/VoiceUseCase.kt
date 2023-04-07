@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.thoughtworks.car.R
+import com.thoughtworks.car.core.ui.BaseUseCase
 import javax.inject.Inject
 
 data class VoiceUiState(
@@ -11,6 +12,10 @@ data class VoiceUiState(
     @DrawableRes val systemVolume: Int = R.drawable.fake_system_volume,
 )
 
-class VoiceUseCase @Inject constructor() {
+class VoiceUseCase @Inject constructor() : BaseUseCase {
     val uiState by mutableStateOf(VoiceUiState())
+
+    override fun onCleared() {
+        // do nothing
+    }
 }
