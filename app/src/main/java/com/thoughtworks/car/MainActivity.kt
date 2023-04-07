@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                         .route(this)
                 }
             }
-            true
         }
         navView.setItemSelected(selectedItemId, true)
     }

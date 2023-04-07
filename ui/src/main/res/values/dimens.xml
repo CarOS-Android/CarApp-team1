@@ -9,12 +9,17 @@
     <dimen name="dimension_20">20dp</dimen>
     <dimen name="dimension_24">24dp</dimen>
     <dimen name="dimension_28">28dp</dimen>
+    <dimen name="dimension_30">30dp</dimen>
     <dimen name="dimension_32">32dp</dimen>
     <dimen name="dimension_36">36dp</dimen>
     <dimen name="dimension_40">40dp</dimen>
     <dimen name="dimension_44">44dp</dimen>
     <dimen name="dimension_48">48dp</dimen>
-    <dimen name="dimension_96">96dp</dimen>
+    <dimen name="dimension_52">52dp</dimen>
+
+    <dimen name="dimension_72">72dp</dimen>
+    <dimen name="dimension_144">144dp</dimen>
+    <dimen name="dimension_168">168dp</dimen>
 
     <dimen name="standard_padding">@dimen/dimension_16</dimen>
     <dimen name="half_padding">@dimen/dimension_8</dimen>

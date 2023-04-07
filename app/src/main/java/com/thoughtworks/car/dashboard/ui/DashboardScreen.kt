@@ -1,7 +1,15 @@
 package com.thoughtworks.car.dashboard.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -44,15 +52,13 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row {
-                HvacView(
-                    hvacUiState = viewModel.hvacUseCase.uiState,
-//                    setLeftTemperature = { t -> viewModel.hvacUseCase.setHvacLeftTemperature(t) },
-//                    setRightTemperature = { t -> viewModel.hvacUseCase.setHvacRightTemperature(t) },
-                )
+                HvacView()
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxHeight().padding(start = 40.dp)
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(start = 40.dp)
                 ) {
                     // hand brake view
                     ParkingBrakeView(
