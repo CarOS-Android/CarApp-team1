@@ -21,6 +21,7 @@ const val DEFAULT_TEMPERATURE = 18F
 data class HvacUiState(
     val leftTemperature: Float = DEFAULT_TEMPERATURE,
     val rightTemperature: Float = DEFAULT_TEMPERATURE,
+    val hvacFanSpeed: Int = 0
 )
 
 @HiltViewModel
@@ -31,11 +32,12 @@ class HvacViewModel @Inject constructor(
 
     private val _leftTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
     private val _rightTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
+    private val _fanSpeed: MutableStateFlow<Int> = MutableStateFlow(0)
 
     val uiState: StateFlow<HvacUiState> = combine(
-        _leftTemperature, _rightTemperature
-    ) { leftTemperature, rightTemperature ->
-        HvacUiState(leftTemperature, rightTemperature)
+        _leftTemperature, _rightTemperature, _fanSpeed
+    ) { leftTemperature, rightTemperature, fanSpeed ->
+        HvacUiState(leftTemperature, rightTemperature, fanSpeed)
     }.stateIn(coroutineScope, WhileSubscribed(), HvacUiState())
 
     private var hvacTemperatureListener = object : CarPropertyManager.CarPropertyEventCallback {
@@ -52,11 +54,29 @@ class HvacViewModel @Inject constructor(
             Logger.w("Received error car property event, propId=$propId")
         }
     }
+    private var hvacFanSpeedListener = object : CarPropertyManager.CarPropertyEventCallback {
+
+        override fun onChangeEvent(value: CarPropertyValue<Any>) {
+            Logger.i("Car HVAC fan speed value changed $value")
+            when (value.propertyId) {
+                VehiclePropertyIds.HVAC_FAN_SPEED -> _fanSpeed.value = value.value as Int
+            }
+        }
+
+        override fun onErrorEvent(propId: Int, zone: Int) {
+            Logger.w("Received error car property event, propId=$propId")
+        }
+    }
 
     init {
         carPropertyManager.registerCallback(
             hvacTemperatureListener,
             VehiclePropertyIds.HVAC_TEMPERATURE_SET,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+        carPropertyManager.registerCallback(
+            hvacFanSpeedListener,
+            VehiclePropertyIds.HVAC_FAN_SPEED,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
     }
@@ -85,10 +105,25 @@ class HvacViewModel @Inject constructor(
         }
     }
 
+    fun setHvacFanSpeed(hvacFanSpeed: Int) {
+        try {
+            carPropertyManager.setIntProperty(
+                VehiclePropertyIds.HVAC_FAN_SPEED,
+                HVAC_FAN_SPEED_AREA,
+                hvacFanSpeed
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set HVAC fan speed fail", e)
+        }
+    }
+
     companion object {
         private const val HVAC_AREA_LEFT =
             VehicleAreaSeat.SEAT_ROW_1_LEFT or VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
         private const val HVAC_AREA_RIGHT =
             VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_RIGHT
+        private const val HVAC_FAN_SPEED_AREA = VehicleAreaSeat.SEAT_ROW_1_LEFT or
+            VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_LEFT or
+            VehicleAreaSeat.SEAT_ROW_2_CENTER or VehicleAreaSeat.SEAT_ROW_2_RIGHT
     }
 }

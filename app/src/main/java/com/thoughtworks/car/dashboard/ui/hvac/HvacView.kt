@@ -48,7 +48,7 @@ fun HvacView(modifier: Modifier = Modifier) {
                 driverSeat = true,
                 description = "主驾",
             )
-            // Hvac fan view here
+            HvacFanSpeedController()
             HvacTemperatureView(
                 driverSeat = false,
                 description = "副驾",
