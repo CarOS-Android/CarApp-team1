@@ -1,7 +1,6 @@
 package com.thoughtworks.car.dashboard.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,18 +54,15 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 HvacView()
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(start = 40.dp)
+                    modifier = Modifier.fillMaxHeight()
                 ) {
-                    // hand brake view
                     ParkingBrakeView(
                         parkingBrakeUiState = viewModel.parkingBrakeUseCase.uiState,
                         toggleParkingBrake = {
                             viewModel.parkingBrakeUseCase.toggleParkingBrake()
                         }
                     )
+                    Spacer(modifier = Modifier.weight(1f))
                     AutoHoldView(
                         autoHoldUiState = viewModel.autoHoldUseCase.uiState,
                         toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold() }
@@ -80,7 +76,10 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
             MediaView(mediaUiState = viewModel.mediaUseCase.uiState)
             Spacer(modifier = Modifier.height(8.dp))
-            StatusView(statusUiState = viewModel.statusUseCase.uiState)
+            StatusView(
+                statusUiState = viewModel.statusUseCase.uiState,
+                toggleWindowLock = { viewModel.statusUseCase.toggleWindowLock() }
+            )
         }
     }
 }
