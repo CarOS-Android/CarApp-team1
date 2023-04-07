@@ -30,37 +30,37 @@ fun StatusView(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         StatusButton(
-            icon_on = R.drawable.ic_window_lock,
-            icon_off = R.drawable.ic_window_unlock,
+            iconOn = R.drawable.ic_window_lock,
+            iconOff = R.drawable.ic_window_unlock,
             status = uiState.windowLockState
         ) {
             toggleWindowLock()
         }
 
         StatusButton(
-            icon_on = R.drawable.ic_fragrance,
-            icon_off = R.drawable.ic_fragrance,
+            iconOn = R.drawable.ic_fragrance,
+            iconOff = R.drawable.ic_fragrance,
             status = true
         ) {
         }
 
         StatusButton(
-            icon_on = R.drawable.ic_wifi,
-            icon_off = R.drawable.ic_wifi,
+            iconOn = R.drawable.ic_wifi,
+            iconOff = R.drawable.ic_wifi,
             status = true
         ) {
         }
 
         StatusButton(
-            icon_on = R.drawable.ic_bluetooth,
-            icon_off = R.drawable.ic_bluetooth,
+            iconOn = R.drawable.ic_bluetooth,
+            iconOff = R.drawable.ic_bluetooth,
             status = true
         ) {
         }
 
         StatusButton(
-            icon_on = R.drawable.ic_cellular,
-            icon_off = R.drawable.ic_cellular,
+            iconOn = R.drawable.ic_cellular,
+            iconOff = R.drawable.ic_cellular,
             status = true
         ) {
         }
@@ -69,8 +69,8 @@ fun StatusView(
 
 @Composable
 fun StatusButton(
-    @DrawableRes icon_on: Int,
-    @DrawableRes icon_off: Int,
+    @DrawableRes iconOn: Int,
+    @DrawableRes iconOff: Int,
     status: Boolean,
     onClick: () -> Unit
 ) {
@@ -78,7 +78,7 @@ fun StatusButton(
         onClick = { onClick() },
     ) {
         Icon(
-            painter = painterResource(id = if (status) icon_on else icon_off),
+            painter = painterResource(id = if (status) iconOn else iconOff),
             contentDescription = null,
             tint = Color.Unspecified
         )

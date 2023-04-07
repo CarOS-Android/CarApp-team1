@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AutoHoldView(
-    modifier: Modifier = Modifier,
     autoHoldUiState: StateFlow<AutoHoldUiState>,
     toggleAutoHold: () -> Unit,
 ) {
