@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.container.stepper.Stepper
 import com.thoughtworks.blindhmi.ui.composable.border
 import com.thoughtworks.blindhmi.ui.composable.center
@@ -28,23 +29,15 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopStepper
 import com.thoughtworks.blindhmi.ui.utils.moveDown
 import com.thoughtworks.blindhmi.ui.utils.moveUp
+import com.thoughtworks.car.HvacViewModel
 import com.thoughtworks.car.R
 import com.thoughtworks.car.core.logging.Logger
 import com.thoughtworks.car.ui.theme.Theme
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.util.Locale
 import com.thoughtworks.car.ui.R as UiR
 
 @Composable
-fun HvacView(
-    modifier: Modifier = Modifier,
-    hvacUiState: StateFlow<HvacUiState>,
-    setLeftTemperature: (Float) -> Unit,
-    setRightTemperature: (Float) -> Unit
-) {
-    val uiState by hvacUiState.collectAsState()
-
+fun HvacView(modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Image(painter = painterResource(id = R.drawable.bg_hvac), contentDescription = "")
         Row(
@@ -53,27 +46,24 @@ fun HvacView(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             HvacTemperatureView(
-                temperature = uiState.leftTemperature,
+                driverSeat = true,
                 description = "主驾",
-                setTemperature = { t -> setLeftTemperature(t) }
             )
             // Hvac fan view here
             HvacTemperatureView(
-                temperature = uiState.rightTemperature,
+                driverSeat = false,
                 description = "副驾",
-                setTemperature = { t -> setRightTemperature(t) }
             )
         }
     }
 }
 
 @Composable
-private fun HvacTemperatureView(
-    temperature: Float,
-    description: String,
-    setTemperature: (Float) -> Unit
-) {
+private fun HvacTemperatureView(driverSeat: Boolean, description: String) {
+    val viewModel: HvacViewModel = viewModel()
+    val uiState by viewModel.uiState.collectAsState()
     val resources = LocalContext.current.resources
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val isTemperatureDockVisible = remember { mutableStateOf(false) }
 
@@ -83,7 +73,7 @@ private fun HvacTemperatureView(
             centerBackgroundRadius = 52.dp,
             centerBackgroundRes = R.drawable.ic_dock_temperature_bg,
             stepOrientation = Stepper.CLOCKWISE,
-            steps = 10,
+            steps = 24,
             currentValue = 16f,
             minValue = 16f,
             maxValue = 28f,
@@ -128,7 +118,7 @@ private fun HvacTemperatureView(
                                 text = String.format(
                                     Locale.getDefault(),
                                     "%.1f\u00b0",
-                                    temperature
+                                    if (driverSeat) uiState.leftTemperature else uiState.rightTemperature
                                 ),
                                 color = colorResource(id = UiR.color.grey_800),
                                 style = Theme.typography.h6
@@ -154,7 +144,11 @@ private fun HvacTemperatureView(
             onActive = { moveDown() },
             onInactive = { moveUp() },
             onSweepStep = { _, value ->
-                setTemperature(value)
+                if (driverSeat) {
+                    viewModel.setHvacLeftTemperature(value)
+                } else {
+                    viewModel.setHvacRightTemperature(value)
+                }
             },
             onStepHover = { step ->
                 Logger.i("onStepHover: step = $step")
@@ -171,14 +165,5 @@ private fun HvacTemperatureView(
 @Preview
 @Composable
 fun PreviewHvacView() {
-    HvacView(
-        hvacUiState = MutableStateFlow(
-            HvacUiState(
-                leftTemperature = 18f,
-                rightTemperature = 20f
-            )
-        ),
-        setLeftTemperature = {},
-        setRightTemperature = {}
-    )
+    HvacView()
 }

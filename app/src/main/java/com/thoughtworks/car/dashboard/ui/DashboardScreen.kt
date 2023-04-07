@@ -52,11 +52,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row {
-                HvacView(
-                    hvacUiState = viewModel.hvacUseCase.uiState,
-                    setLeftTemperature = { t -> viewModel.hvacUseCase.setHvacLeftTemperature(t) },
-                    setRightTemperature = { t -> viewModel.hvacUseCase.setHvacRightTemperature(t) },
-                )
+                HvacView()
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,

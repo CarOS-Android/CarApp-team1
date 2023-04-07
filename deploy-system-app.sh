@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# 0. require the adb root permission
+adb root
+
 # 1. build the apk
 ./gradlew :app:assembleDevDebug
 
