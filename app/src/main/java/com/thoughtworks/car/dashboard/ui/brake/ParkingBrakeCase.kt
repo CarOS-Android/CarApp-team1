@@ -5,6 +5,7 @@ import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.car.core.logging.Logger
+import com.thoughtworks.car.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -15,7 +16,7 @@ data class ParkingUiState(
 
 class ParkingBrakeUseCase @Inject constructor(
     private val carPropertyManager: CarPropertyManager
-) {
+) : BaseUseCase {
     private val _autoParkingBrakeState: MutableStateFlow<ParkingUiState> =
         MutableStateFlow(ParkingUiState())
     val uiState: StateFlow<ParkingUiState> = _autoParkingBrakeState
@@ -46,5 +47,9 @@ class ParkingBrakeUseCase @Inject constructor(
             VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL
         )
         Logger.i("Car parking brake property value is $on")
+    }
+
+    override fun onCleared() {
+        carPropertyManager.unregisterCallback(parkingBrakeListener)
     }
 }

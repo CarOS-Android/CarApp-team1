@@ -1,5 +1,6 @@
 package com.thoughtworks.car.dashboard.ui.time
 
+import com.thoughtworks.car.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
@@ -10,12 +11,14 @@ import javax.inject.Inject
 
 data class TimeUiState(val time: String = "")
 
-class TimeUseCase @Inject constructor() {
+class TimeUseCase @Inject constructor() : BaseUseCase {
     private val _uiState: MutableStateFlow<TimeUiState> = MutableStateFlow(TimeUiState())
     val uiState: StateFlow<TimeUiState> = _uiState
 
+    private val timer = Timer()
+
     init {
-        Timer().schedule(
+        timer.schedule(
             object : TimerTask() {
                 override fun run() {
                     _uiState.value = TimeUiState(current())
@@ -29,6 +32,10 @@ class TimeUseCase @Inject constructor() {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         return current.format(formatter)
+    }
+
+    override fun onCleared() {
+        timer.cancel()
     }
 
     companion object {
