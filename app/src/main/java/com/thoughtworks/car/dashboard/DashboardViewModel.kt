@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import com.thoughtworks.car.dashboard.ui.brake.AutoHoldUseCase
 import com.thoughtworks.car.dashboard.ui.brake.ParkingBrakeUseCase
 import com.thoughtworks.car.dashboard.ui.door.DoorUseCase
-import com.thoughtworks.car.dashboard.ui.hvac.HvacUseCase
+import com.thoughtworks.car.dashboard.ui.ignition.IgnitionUseCase
 import com.thoughtworks.car.dashboard.ui.media.MediaUseCase
 import com.thoughtworks.car.dashboard.ui.navi.NaviUseCase
-import com.thoughtworks.car.dashboard.ui.ignition.IgnitionUseCase
 import com.thoughtworks.car.dashboard.ui.status.StatusUseCase
 import com.thoughtworks.car.dashboard.ui.time.TimeUseCase
 import com.thoughtworks.car.dashboard.ui.voice.VoiceUseCase
@@ -20,11 +19,23 @@ class DashboardViewModel @Inject constructor(
     val voiceUseCase: VoiceUseCase,
     val ignitionUseCase: IgnitionUseCase,
     val doorUseCase: DoorUseCase,
-    val hvacUseCase: HvacUseCase,
     val naviUseCase: NaviUseCase,
     val mediaUseCase: MediaUseCase,
     val statusUseCase: StatusUseCase,
     val autoHoldUseCase: AutoHoldUseCase,
     val parkingBrakeUseCase: ParkingBrakeUseCase
-    // add more useCase here
-) : ViewModel()
+) : ViewModel() {
+
+    override fun onCleared() {
+        timeUseCase.onCleared()
+        voiceUseCase.onCleared()
+        ignitionUseCase.onCleared()
+        doorUseCase.onCleared()
+        naviUseCase.onCleared()
+        mediaUseCase.onCleared()
+        statusUseCase.onCleared()
+        autoHoldUseCase.onCleared()
+        parkingBrakeUseCase.onCleared()
+        super.onCleared()
+    }
+}

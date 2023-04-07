@@ -3,7 +3,11 @@ package com.thoughtworks.car.dashboard.ui.brake
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,6 +25,10 @@ import com.thoughtworks.car.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+private const val BLACK_COLOR = 0xFF32383F
+private const val GREY_COLOR = 0xFF1C1E24
+private const val SCALE_RATIO = 0.67f
+
 @Composable
 fun ParkingBrakeView(
     parkingBrakeUiState: StateFlow<ParkingUiState>,
@@ -29,7 +37,7 @@ fun ParkingBrakeView(
     val uiState by parkingBrakeUiState.collectAsState()
 
     val brush = Brush.linearGradient(
-        colors = listOf(Color(0xFF32383F), Color(0xFF1C1E24)),
+        colors = listOf(Color(BLACK_COLOR), Color(GREY_COLOR)),
         start = Offset.Zero,
         end = Offset.Infinite
     )
@@ -51,7 +59,7 @@ fun ParkingBrakeView(
                 Image(
                     painter = painterResource(id = R.drawable.parking_brake_p),
                     contentDescription = null,
-                    modifier = Modifier.scale(0.67f)
+                    modifier = Modifier.scale(SCALE_RATIO)
                 )
                 Spacer(modifier = Modifier.padding(vertical = 1.dp))
                 Image(
@@ -63,7 +71,7 @@ fun ParkingBrakeView(
                         }
                     ),
                     contentDescription = null,
-                    modifier = Modifier.scale(0.67f)
+                    modifier = Modifier.scale(SCALE_RATIO)
                 )
             }
         }

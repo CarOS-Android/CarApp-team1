@@ -6,6 +6,7 @@ import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import androidx.annotation.DrawableRes
 import com.thoughtworks.car.core.logging.Logger
+import com.thoughtworks.car.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -23,7 +24,7 @@ data class StatusConfigration(
 
 class StatusUseCase @Inject constructor(
     private val carPropertyManager: CarPropertyManager,
-) {
+) : BaseUseCase {
     private val _uiState: MutableStateFlow<StatusUiState> = MutableStateFlow(StatusUiState())
     val uiState: StateFlow<StatusUiState> = _uiState
 
@@ -55,5 +56,9 @@ class StatusUseCase @Inject constructor(
                 or VehicleAreaWindow.WINDOW_ROW_2_RIGHT,
             _uiState.value.windowLockState.not()
         )
+    }
+
+    override fun onCleared() {
+        carPropertyManager.unregisterCallback(windowLockListener)
     }
 }

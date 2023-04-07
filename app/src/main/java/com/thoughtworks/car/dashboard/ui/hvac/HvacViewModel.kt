@@ -4,8 +4,10 @@ import android.car.VehicleAreaSeat
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import androidx.lifecycle.ViewModel
 import com.thoughtworks.car.core.di.ApplicationScope
 import com.thoughtworks.car.core.logging.Logger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -14,24 +16,26 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+const val DEFAULT_TEMPERATURE = 18F
+
 data class HvacUiState(
-    val leftTemperature: String = "",
-    val rightTemperature: String = "",
+    val leftTemperature: Float = DEFAULT_TEMPERATURE,
+    val rightTemperature: Float = DEFAULT_TEMPERATURE,
 )
 
-class HvacUseCase @Inject constructor(
+@HiltViewModel
+class HvacViewModel @Inject constructor(
     @ApplicationScope val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager
-) {
+) : ViewModel() {
 
-    private val _leftTemperature: MutableStateFlow<Float?> = MutableStateFlow(null)
-    private val _rightTemperature: MutableStateFlow<Float?> = MutableStateFlow(null)
+    private val _leftTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
+    private val _rightTemperature: MutableStateFlow<Float> = MutableStateFlow(DEFAULT_TEMPERATURE)
 
     val uiState: StateFlow<HvacUiState> = combine(
-        _leftTemperature,
-        _rightTemperature
+        _leftTemperature, _rightTemperature
     ) { leftTemperature, rightTemperature ->
-        HvacUiState("$leftTemperature\u00b0", "$rightTemperature\u00b0")
+        HvacUiState(leftTemperature, rightTemperature)
     }.stateIn(coroutineScope, WhileSubscribed(), HvacUiState())
 
     private var hvacTemperatureListener = object : CarPropertyManager.CarPropertyEventCallback {
@@ -60,11 +64,11 @@ class HvacUseCase @Inject constructor(
     fun setHvacLeftTemperature(temperature: Float) {
         try {
             carPropertyManager.setFloatProperty(
-                VehiclePropertyIds.HVAC_TEMPERATURE_SET,
-                HVAC_AREA_LEFT,
-                temperature
+                VehiclePropertyIds.HVAC_TEMPERATURE_SET, HVAC_AREA_LEFT, temperature
             )
         } catch (e: IllegalArgumentException) {
+            Logger.e("set HVAC left temperature fail", e)
+        } catch (e: SecurityException) {
             Logger.e("set HVAC left temperature fail", e)
         }
     }
@@ -72,19 +76,19 @@ class HvacUseCase @Inject constructor(
     fun setHvacRightTemperature(temperature: Float) {
         try {
             carPropertyManager.setFloatProperty(
-                VehiclePropertyIds.HVAC_TEMPERATURE_SET,
-                HVAC_AREA_RIGHT,
-                temperature
+                VehiclePropertyIds.HVAC_TEMPERATURE_SET, HVAC_AREA_RIGHT, temperature
             )
         } catch (e: IllegalArgumentException) {
+            Logger.e("set HVAC right temperature fail", e)
+        } catch (e: SecurityException) {
             Logger.e("set HVAC right temperature fail", e)
         }
     }
 
     companion object {
-        private const val HVAC_AREA_LEFT = VehicleAreaSeat.SEAT_ROW_1_LEFT or
-            VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
-        private const val HVAC_AREA_RIGHT = VehicleAreaSeat.SEAT_ROW_1_RIGHT or
-            VehicleAreaSeat.SEAT_ROW_2_RIGHT
+        private const val HVAC_AREA_LEFT =
+            VehicleAreaSeat.SEAT_ROW_1_LEFT or VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
+        private const val HVAC_AREA_RIGHT =
+            VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_RIGHT
     }
 }

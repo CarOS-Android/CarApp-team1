@@ -25,6 +25,36 @@ androidApplication {
 
     enableCompose()
 
+    signingConfigs {
+        create("system") {
+            storeFile = file("${rootDir.path}/system_app.keystore")
+            storePassword = "android"
+            keyAlias = "system_app"
+            keyPassword = "android"
+            enableV3Signing = true
+            enableV4Signing = true
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.findByName("system")
+        }
+        getByName("release") {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.findByName("system")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true

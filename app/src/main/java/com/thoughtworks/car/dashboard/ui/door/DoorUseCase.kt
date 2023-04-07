@@ -8,6 +8,7 @@ import androidx.annotation.DrawableRes
 import com.thoughtworks.car.R
 import com.thoughtworks.car.core.di.ApplicationScope
 import com.thoughtworks.car.core.logging.Logger
+import com.thoughtworks.car.core.ui.BaseUseCase
 import com.thoughtworks.car.core.utils.WhileUiSubscribed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ data class DoorUiState(
 class DoorUseCase @Inject constructor(
     @ApplicationScope private val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager
-) {
+) : BaseUseCase {
 
     private val _doorRow1LeftLock: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _doorRow1RightLock: MutableStateFlow<Boolean> = MutableStateFlow(true)
@@ -121,11 +122,6 @@ class DoorUseCase @Inject constructor(
     fun toggleHoodDoor() {
         // java.lang.IllegalArgumentException: Failed to set value for: 0x16400b00,
         // areaId: 0x10000000, error: android.os.ServiceSpecificException
-//        carPropertyManager.setIntProperty(
-//            VehiclePropertyIds.DOOR_POS,
-//            VehicleAreaDoor.DOOR_HOOD,
-//            if (_doorHoodState.value) 0 else 1
-//        )
     }
 
     fun toggleRearDoor() {
@@ -134,5 +130,10 @@ class DoorUseCase @Inject constructor(
             VehicleAreaDoor.DOOR_REAR,
             if (_doorRearState.value) 0 else 1
         )
+    }
+
+    override fun onCleared() {
+        carPropertyManager.unregisterCallback(doorLockListener)
+        carPropertyManager.unregisterCallback(doorPositionListener)
     }
 }
