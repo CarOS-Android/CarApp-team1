@@ -1,153 +1,95 @@
 package com.thoughtworks.car.dashboard.ui.status
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.thoughtworks.car.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun StatusView(modifier: Modifier = Modifier, statusUiState: StatusUiState) {
+fun StatusView(
+    modifier: Modifier = Modifier,
+    statusUiState: StateFlow<StatusUiState>,
+    toggleWindowLock: () -> Unit,
+) {
+    val uiState by statusUiState.collectAsState()
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E1E1E)),
-            shape = RoundedCornerShape(9.dp),
-            modifier = Modifier.size(73.dp, 65.dp)
+        StatusButton(
+            icon_on = R.drawable.ic_window_lock,
+            icon_off = R.drawable.ic_window_unlock,
+            status = uiState.windowLockState
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Box(
-                    modifier = Modifier,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_window_frame),
-                        contentDescription = null
-                    )
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_window_stripe),
-                        modifier = modifier.offset(x = 5.dp, y = 6.dp),
-                        contentDescription = null
-                    )
-                }
-
-                Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.window_lock),
-                    contentDescription = null
-                )
-            }
+            toggleWindowLock()
         }
 
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E1E1E)),
-            shape = RoundedCornerShape(9.dp),
-            modifier = Modifier.size(73.dp, 65.dp)
+        StatusButton(
+            icon_on = R.drawable.ic_fragrance,
+            icon_off = R.drawable.ic_fragrance,
+            status = true
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fragrance),
-                    contentDescription = null
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.fragrance),
-                    contentDescription = null
-                )
-            }
         }
 
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E1E1E)),
-            shape = RoundedCornerShape(9.dp),
-            modifier = Modifier.size(73.dp, 65.dp)
+        StatusButton(
+            icon_on = R.drawable.ic_wifi,
+            icon_off = R.drawable.ic_wifi,
+            status = true
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fragrance),
-                    contentDescription = null
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.fragrance),
-                    contentDescription = null
-                )
-            }
         }
 
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E1E1E)),
-            shape = RoundedCornerShape(9.dp),
-            modifier = Modifier.size(73.dp, 65.dp)
+        StatusButton(
+            icon_on = R.drawable.ic_bluetooth,
+            icon_off = R.drawable.ic_bluetooth,
+            status = true
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fragrance),
-                    contentDescription = null
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.fragrance),
-                    contentDescription = null
-                )
-            }
         }
 
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E1E1E)),
-            shape = RoundedCornerShape(9.dp),
-            modifier = Modifier.size(73.dp, 65.dp)
+        StatusButton(
+            icon_on = R.drawable.ic_cellular,
+            icon_off = R.drawable.ic_cellular,
+            status = true
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fragrance),
-                    contentDescription = null
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.fragrance),
-                    contentDescription = null
-                )
-            }
         }
+    }
+}
+
+@Composable
+fun StatusButton(
+    @DrawableRes icon_on: Int,
+    @DrawableRes icon_off: Int,
+    status: Boolean,
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = { onClick() },
+    ) {
+        Icon(
+            painter = painterResource(id = if (status) icon_on else icon_off),
+            contentDescription = null,
+            tint = Color.Unspecified
+        )
     }
 }
 
 @Preview
 @Composable
 fun PreviewStatusView() {
-    StatusView(statusUiState = StatusUiState())
+    StatusView(
+        statusUiState = MutableStateFlow(StatusUiState()),
+        toggleWindowLock = {}
+    )
 }

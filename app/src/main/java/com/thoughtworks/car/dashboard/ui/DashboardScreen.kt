@@ -73,7 +73,10 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
             MediaView(mediaUiState = viewModel.mediaUseCase.uiState)
             Spacer(modifier = Modifier.height(8.dp))
-            StatusView(statusUiState = viewModel.statusUseCase.uiState)
+            StatusView(
+                statusUiState = viewModel.statusUseCase.uiState,
+                toggleWindowLock = { viewModel.statusUseCase.toggleWindowLock() }
+            )
         }
     }
 }
