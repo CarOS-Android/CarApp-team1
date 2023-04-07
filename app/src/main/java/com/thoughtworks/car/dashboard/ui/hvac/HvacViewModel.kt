@@ -1,4 +1,4 @@
-package com.thoughtworks.car
+package com.thoughtworks.car.dashboard.ui.hvac
 
 import android.car.VehicleAreaSeat
 import android.car.VehiclePropertyIds

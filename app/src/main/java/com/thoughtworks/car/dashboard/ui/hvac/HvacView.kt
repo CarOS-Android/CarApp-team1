@@ -29,7 +29,6 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopStepper
 import com.thoughtworks.blindhmi.ui.utils.moveDown
 import com.thoughtworks.blindhmi.ui.utils.moveUp
-import com.thoughtworks.car.HvacViewModel
 import com.thoughtworks.car.R
 import com.thoughtworks.car.core.logging.Logger
 import com.thoughtworks.car.ui.theme.Theme
