@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -50,7 +51,10 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 toggleRearDoor = { viewModel.doorUseCase.toggleRearDoor() }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Spacer(modifier = Modifier.width(80.dp))
                 HvacView()
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
