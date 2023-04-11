@@ -11,7 +11,16 @@ import com.thoughtworks.car.dashboard.ui.status.StatusUseCase
 import com.thoughtworks.car.dashboard.ui.time.TimeUseCase
 import com.thoughtworks.car.dashboard.ui.voice.VoiceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
+
+data class DashBoardUiState(val centerAreaState: CenterAreaState = CenterAreaState.LOCK_CONTROLLER)
+
+enum class CenterAreaState {
+    LOCK_CONTROLLER,
+    LIGHT_CONTROLLER
+}
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
@@ -25,6 +34,18 @@ class DashboardViewModel @Inject constructor(
     val autoHoldUseCase: AutoHoldUseCase,
     val parkingBrakeUseCase: ParkingBrakeUseCase
 ) : ViewModel() {
+
+    private var _uiState: MutableStateFlow<DashBoardUiState> = MutableStateFlow(DashBoardUiState())
+
+    val uiState: StateFlow<DashBoardUiState> = _uiState
+
+    fun switchCenterAreaState() {
+        _uiState.value = if (uiState.value.centerAreaState == CenterAreaState.LOCK_CONTROLLER) {
+            DashBoardUiState(CenterAreaState.LIGHT_CONTROLLER)
+        } else {
+            DashBoardUiState(CenterAreaState.LOCK_CONTROLLER)
+        }
+    }
 
     override fun onCleared() {
         timeUseCase.onCleared()

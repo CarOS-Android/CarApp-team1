@@ -33,6 +33,11 @@
 
 run the deploy-system-app.sh shell script
 
+### UI development
+
+1. run `adb shell wm density 160`
+2. according to the px value provided by figma, use 1:1 dp
+
 ## LICENSE
 
     Copyright 2022 Thoughtworks, Inc.

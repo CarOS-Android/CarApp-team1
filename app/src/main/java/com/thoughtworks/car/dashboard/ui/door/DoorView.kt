@@ -1,6 +1,7 @@
 package com.thoughtworks.car.dashboard.ui.door
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -11,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +20,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.thoughtworks.car.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.thoughtworks.car.ui.R as CAR_UIR
 
 @Composable
 fun DoorView(
@@ -25,7 +28,8 @@ fun DoorView(
     doorUiState: StateFlow<DoorUiState>,
     toggleSeatDoors: () -> Unit,
     toggleHoodDoor: () -> Unit,
-    toggleRearDoor: () -> Unit
+    toggleRearDoor: () -> Unit,
+    switchCenterAreaState: () -> Unit
 ) {
     val uiState by doorUiState.collectAsState()
     ConstraintLayout(modifier = modifier) {
@@ -33,7 +37,7 @@ fun DoorView(
         val (doorButton, doorHoodButton, doorRearButton) = createRefs()
         IconButton(
             modifier = Modifier
-                .size(40.dp)
+                .size(dimensionResource(CAR_UIR.dimen.dimension_48))
                 .constrainAs(doorRearButton) {
                     top.linkTo(parent.top, margin = 20.dp)
                     end.linkTo(parent.end, margin = 70.dp)
@@ -49,18 +53,18 @@ fun DoorView(
 
         Image(
             modifier = Modifier
-                .width(440.dp)
                 .constrainAs(car) {
                     top.linkTo(doorRearButton.bottom, margin = 4.dp)
                     start.linkTo(parent.start, margin = 70.dp)
                     end.linkTo(doorRearButton.end)
-                },
+                }
+                .clickable { switchCenterAreaState() },
             painter = painterResource(id = uiState.car), contentDescription = ""
         )
 
         IconButton(
             modifier = Modifier
-                .size(40.dp)
+                .size(dimensionResource(CAR_UIR.dimen.dimension_48))
                 .constrainAs(doorHoodButton) {
                     top.linkTo(parent.top, margin = 50.dp)
                     start.linkTo(parent.start, margin = 80.dp)
@@ -76,8 +80,8 @@ fun DoorView(
 
         IconButton(
             modifier = Modifier
-                .width(80.dp)
-                .height(40.dp)
+                .width(dimensionResource(CAR_UIR.dimen.dimension_100))
+                .height(dimensionResource(CAR_UIR.dimen.dimension_50))
                 .constrainAs(doorButton) {
                     top.linkTo(car.bottom)
                     start.linkTo(parent.start)
@@ -114,6 +118,7 @@ fun PreviewDoorView() {
         ),
         toggleSeatDoors = {},
         toggleHoodDoor = {},
-        toggleRearDoor = {}
+        toggleRearDoor = {},
+        switchCenterAreaState = {}
     )
 }
