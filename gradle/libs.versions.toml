@@ -31,6 +31,7 @@ fragment = "1.5.4"
 router = "42b1bcd3de"
 navigation = "1.4.0"
 hmi-ui = "1.0.3"
+car-lib = "1.0.1"
 
 # test
 arch-test = "2.1.0"
@@ -128,6 +129,8 @@ chip-navigation = { group = "com.github.ismaeldivita", name = "chip-navigation-b
 
 #blind-hmi-ui
 blind-hmi-ui = {module = "com.thoughtworks.blindhmi:ui", version.ref = "hmi-ui"}
+
+tw-carlib = {module = "com.thoughtworks.automotive.team1:carlib", version.ref = "car-lib"}
 
 [bundles]
 compose = [

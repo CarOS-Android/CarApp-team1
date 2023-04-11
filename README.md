@@ -35,8 +35,10 @@ run the deploy-system-app.sh shell script
 
 ### UI development
 
-1. run `adb shell wm density 160`
-2. according to the px value provided by figma, use 1:1 dp
+1. option1 set `hw.lcd.density`=160 that in /Users/{Username}/.android/avd/Automotive_API_33.avd/config.ini
+2. option2 run `adb shell wm density 160`
+3. according to the px value provided by figma, use 1:1 dp
+
 
 ## LICENSE
 
