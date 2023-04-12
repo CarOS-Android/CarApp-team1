@@ -57,7 +57,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                         top = dimensionResource(CAR_UIR.dimen.dimension_80)
                     )
                     .width(dimensionResource(CAR_UIR.dimen.dimension_625))
-                    .height(dimensionResource(CAR_UIR.dimen.dimension_220)),
+                    .height(dimensionResource(CAR_UIR.dimen.dimension_530)),
                 contentAlignment = Alignment.Center
             ) {
                 if (uiState.value.centerAreaState == CenterAreaState.LOCK_CONTROLLER) {
@@ -69,11 +69,13 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                         switchCenterAreaState = { viewModel.switchCenterAreaState() }
                     )
                 } else {
-                    LightView { viewModel.switchCenterAreaState() }
+                    LightView(
+                        switchCenterAreaState = { viewModel.switchCenterAreaState() },
+                        lightUiState = viewModel.lightUseCase.uiState,
+                        toggleHazardLight = {viewModel.lightUseCase.toggleHazardLight()}
+                    )
                 }
             }
-
-            Spacer(modifier = Modifier.height(dimensionResource(CAR_UIR.dimen.dimension_160)))
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
