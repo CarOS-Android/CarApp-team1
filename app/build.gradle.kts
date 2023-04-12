@@ -63,8 +63,6 @@ androidApplication {
 }
 
 dependencies {
-    compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("android.car.jar"))))
-
     implementation(project(":ui"))
     implementation(project(":core"))
 
@@ -78,6 +76,7 @@ dependencies {
     implementation(libs.router)
     kapt(libs.router.compiler)
 
+    implementation(libs.tw.carlib)
     implementation(libs.bundles.coil)
     implementation(libs.chip.navigation)
     implementation(libs.blind.hmi.ui)
