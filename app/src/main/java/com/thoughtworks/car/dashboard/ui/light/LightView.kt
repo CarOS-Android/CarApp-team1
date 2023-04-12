@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import com.thoughtworks.car.ui.R as CAR_UIR
 import com.thoughtworks.car.R
 import kotlinx.coroutines.flow.StateFlow
+import com.thoughtworks.car.ui.R as CAR_UIR
 
 @Composable
 fun LightView(

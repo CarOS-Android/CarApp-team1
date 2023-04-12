@@ -8,12 +8,12 @@ import com.thoughtworks.car.core.di.ApplicationScope
 import com.thoughtworks.car.core.logging.Logger
 import com.thoughtworks.car.core.ui.BaseUseCase
 import com.thoughtworks.car.core.utils.WhileUiSubscribed
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 data class LightUiState(
     val hazardLightState: Boolean = false,
@@ -45,7 +45,6 @@ class LightUseCase @Inject constructor(
         override fun onErrorEvent(propId: Int, zone: Int) {
             Logger.w("Received error car property event, propId=$propId")
         }
-
     }
 
     init {
@@ -56,7 +55,7 @@ class LightUseCase @Inject constructor(
         )
     }
 
-    fun toggleHazardLight(){
+    fun toggleHazardLight() {
         carPropertyManager.setIntProperty(
             VehiclePropertyIds.HAZARD_LIGHTS_SWITCH,
             VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL,
@@ -67,5 +66,4 @@ class LightUseCase @Inject constructor(
     override fun onCleared() {
         carPropertyManager.unregisterCallback(hazardLightListener)
     }
-
 }
