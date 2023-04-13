@@ -17,7 +17,9 @@ import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionControlView
 import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionPanelView
 import com.thoughtworks.car.vehicle.ui.aircondition.FragranceView
 import com.thoughtworks.car.vehicle.ui.atmospherelight.AtmosphereLightView
+import com.thoughtworks.car.vehicle.ui.seat.SeatUiState
 import com.thoughtworks.car.vehicle.ui.seat.SeatView
+import kotlinx.coroutines.flow.MutableStateFlow
 import com.thoughtworks.car.ui.R as CAR_UIR
 
 @Composable
@@ -42,7 +44,16 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(dimensionResource(CAR_UIR.dimen.dimension_80)))
         Row(modifier = Modifier.weight(SEAT_AND_LIGHT_VIEW_WEIGHT)) {
             Column(modifier = Modifier.weight(SEAT_VIEW_WEIGHT)) {
-                SeatView()
+                SeatView(
+                    seatUiState = MutableStateFlow(SeatUiState()),
+                    toggleMassage = {},
+                    toggleSeatCooling = {},
+                    toggleSeatHeating = {},
+                    toggleSeatAngle = {},
+                    toggleSeatMemory1 = {},
+                    toggleSeatMemory2 = {},
+                    toggleSeatMemory3 = {},
+                    toggleSeatMemoryPlus = {})
             }
             Column(modifier = Modifier.weight(ATMOSPHERE_LIGHT_VIEW_WEIGHT)) {
                 AtmosphereLightView()
