@@ -6,6 +6,7 @@
     <string name="design_system_label">Design System</string>
     <string name="design_system_disable_hint">Design System has disabled!</string>
     <string name="driver_seat">主驾</string>
+    <string name="navigator_seat">副驾</string>
     <string name="seat_heating">Seat heating</string>
     <string name="seat_cooling">Seat cooling</string>
     <string name="seat_massage">Massage</string>

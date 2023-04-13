@@ -7,6 +7,7 @@ import com.thoughtworks.car.core.ui.BaseUseCase
 import javax.inject.Inject
 
 data class SeatUiState(
+    @StringRes val seatArea: Int,
     val seatHeatingState: Boolean = true,
     val seatHeatingLevel: Int = 2,
     val seatCoolingState: Boolean = false,
@@ -19,7 +20,7 @@ data class SeatUiState(
     val seatMemoryPlusState: Boolean = false,
 )
 
-data class SeatState(
+data class SeatFeatureState(
     @DrawableRes val iconOn: Int,
     @DrawableRes val iconOff: Int,
     @ColorRes val colorOn: Int,

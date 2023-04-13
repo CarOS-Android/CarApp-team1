@@ -59,7 +59,7 @@ fun SeatView(
     val uiState by seatUiState.collectAsState()
 
     val seatFeatures = listOf(
-        SeatState(
+        SeatFeatureState(
             iconOn = R.drawable.ic_seat_heating_on,
             iconOff = R.drawable.ic_seat_heating_off,
             colorOn = com.thoughtworks.car.ui.R.color.red_CF597C,
@@ -68,7 +68,7 @@ fun SeatView(
             level = uiState.seatHeatingLevel,
             onClick = toggleSeatHeating
         ),
-        SeatState(
+        SeatFeatureState(
             iconOn = R.drawable.ic_seat_cooling_on,
             iconOff = R.drawable.ic_seat_cooling_off,
             colorOn = com.thoughtworks.car.ui.R.color.light_blue_3476E3,
@@ -77,7 +77,7 @@ fun SeatView(
             level = uiState.seatCoolingLevel,
             onClick = toggleSeatCooling
         ),
-        SeatState(
+        SeatFeatureState(
             iconOn = R.drawable.ic_seat_massage_on,
             iconOff = R.drawable.ic_seat_massage_off,
             colorOn = com.thoughtworks.car.ui.R.color.light_green_59CF8F,
@@ -136,7 +136,7 @@ fun SeatView(
                     .fillMaxHeight()
             ) {
                 SeatAngleButton(
-                    title = R.string.driver_seat,
+                    seatArea = uiState.seatArea,
                     onClick = toggleSeatAngle
                 )
             }
@@ -185,7 +185,7 @@ fun SeatView(
 }
 
 @Composable
-fun SeatAngleButton(@StringRes title: Int, onClick: () -> Unit) {
+fun SeatAngleButton(@StringRes seatArea: Int, onClick: () -> Unit) {
     Button(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(
@@ -206,7 +206,7 @@ fun SeatAngleButton(@StringRes title: Int, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(id = title),
+                text = stringResource(id = seatArea),
                 textAlign = TextAlign.Center,
                 fontSize = 28.sp,
                 color = Color.White
@@ -332,7 +332,7 @@ fun SeatFeatureButton(
 @Composable
 fun PreviewSeatView() {
     SeatView(
-        seatUiState = MutableStateFlow(SeatUiState()),
+        seatUiState = MutableStateFlow(SeatUiState(R.string.navigator_seat)),
         toggleMassage = {},
         toggleSeatCooling = {},
         toggleSeatHeating = {},
@@ -374,7 +374,7 @@ fun PreviewSeatMemoryButton() {
 @Composable
 fun PreviewSeatAngleButton() {
     SeatAngleButton(
-        title = R.string.driver_seat,
+        seatArea = R.string.driver_seat,
         onClick = {}
     )
 }
