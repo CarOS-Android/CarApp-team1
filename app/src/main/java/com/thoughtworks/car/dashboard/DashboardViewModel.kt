@@ -5,6 +5,7 @@ import com.thoughtworks.car.dashboard.ui.brake.AutoHoldUseCase
 import com.thoughtworks.car.dashboard.ui.brake.ParkingBrakeUseCase
 import com.thoughtworks.car.dashboard.ui.door.DoorUseCase
 import com.thoughtworks.car.dashboard.ui.ignition.IgnitionUseCase
+import com.thoughtworks.car.dashboard.ui.light.LightUseCase
 import com.thoughtworks.car.dashboard.ui.media.MediaUseCase
 import com.thoughtworks.car.dashboard.ui.navi.NaviUseCase
 import com.thoughtworks.car.dashboard.ui.status.StatusUseCase
@@ -28,6 +29,7 @@ class DashboardViewModel @Inject constructor(
     val voiceUseCase: VoiceUseCase,
     val ignitionUseCase: IgnitionUseCase,
     val doorUseCase: DoorUseCase,
+    val lightUseCase: LightUseCase,
     val naviUseCase: NaviUseCase,
     val mediaUseCase: MediaUseCase,
     val statusUseCase: StatusUseCase,
@@ -52,6 +54,7 @@ class DashboardViewModel @Inject constructor(
         voiceUseCase.onCleared()
         ignitionUseCase.onCleared()
         doorUseCase.onCleared()
+        lightUseCase.onCleared()
         naviUseCase.onCleared()
         mediaUseCase.onCleared()
         statusUseCase.onCleared()
