@@ -72,7 +72,9 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                     LightView(
                         switchCenterAreaState = { viewModel.switchCenterAreaState() },
                         lightUiState = viewModel.lightUseCase.uiState,
-                        toggleHazardLight = { viewModel.lightUseCase.toggleHazardLight() }
+                        toggleHazardLight = { viewModel.lightUseCase.toggleHazardLight() },
+                        toggleHeadLight = { viewModel.lightUseCase.toggleHeadLight() },
+                        toggleHighBeamLight = { viewModel.lightUseCase.toggleHighBeamLight() }
                     )
                 }
             }

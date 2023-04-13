@@ -35,17 +35,9 @@ class LightUseCase @Inject constructor(
         LightUiState(hazardLightState, headLightState, highBeamLightState)
     }.stateIn(coroutineScope, WhileUiSubscribed, LightUiState())
 
-    private var hazardLightListener = object : CarPropertyManager.CarPropertyEventCallback {
-        override fun onChangeEvent(value: CarPropertyValue<Any>) {
-            Logger.i("Car property value changed $value")
-            val hazardLight = value.value as Int
-            _hazardLightState.value = hazardLight > 0
-        }
-
-        override fun onErrorEvent(propId: Int, zone: Int) {
-            Logger.w("Received error car property event, propId=$propId")
-        }
-    }
+    private var hazardLightListener = carPropertyEventCallback(_hazardLightState)
+    private var headLightListener = carPropertyEventCallback(_headLightState)
+    private var highBeamLightListener = carPropertyEventCallback(_highBeamLightState)
 
     init {
         carPropertyManager.registerCallback(
@@ -53,13 +45,60 @@ class LightUseCase @Inject constructor(
             VehiclePropertyIds.HAZARD_LIGHTS_SWITCH,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
+        carPropertyManager.registerCallback(
+            headLightListener,
+            VehiclePropertyIds.HEADLIGHTS_SWITCH,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+        carPropertyManager.registerCallback(
+            highBeamLightListener,
+            VehiclePropertyIds.HIGH_BEAM_LIGHTS_SWITCH,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
     }
 
+    private fun carPropertyEventCallback(lightUiState: MutableStateFlow<Boolean>) =
+        object : CarPropertyManager.CarPropertyEventCallback {
+            override fun onChangeEvent(value: CarPropertyValue<Any>) {
+                Logger.i("Car property value changed $value")
+                val light = value.value as Int
+                lightUiState.value = light > 0
+
+                if (_headLightState.value && _highBeamLightState.value) {
+                    when (lightUiState) {
+                        _headLightState -> setLightState(
+                            VehiclePropertyIds.HIGH_BEAM_LIGHTS_SWITCH,
+                            _highBeamLightState
+                        )
+                        _highBeamLightState -> setLightState(
+                            VehiclePropertyIds.HEADLIGHTS_SWITCH,
+                            _headLightState
+                        )
+                    }
+                }
+            }
+            override fun onErrorEvent(propId: Int, zone: Int) {
+                Logger.w("Received error car property event, propId=$propId")
+            }
+        }
+
     fun toggleHazardLight() {
+        setLightState(VehiclePropertyIds.HAZARD_LIGHTS_SWITCH, _hazardLightState)
+    }
+
+    fun toggleHeadLight() {
+        setLightState(VehiclePropertyIds.HEADLIGHTS_SWITCH, _headLightState)
+    }
+
+    fun toggleHighBeamLight() {
+        setLightState(VehiclePropertyIds.HIGH_BEAM_LIGHTS_SWITCH, _highBeamLightState)
+    }
+
+    private fun setLightState(propertyIds: Int, lightUiState: MutableStateFlow<Boolean>) {
         carPropertyManager.setIntProperty(
-            VehiclePropertyIds.HAZARD_LIGHTS_SWITCH,
+            propertyIds,
             VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL,
-            if (_hazardLightState.value) 0 else 1
+            if (lightUiState.value) 0 else 1
         )
     }
 
