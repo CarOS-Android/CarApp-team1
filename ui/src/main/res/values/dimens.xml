@@ -27,11 +27,13 @@
     <dimen name="dimension_118">118dp</dimen>
     <dimen name="dimension_128">128dp</dimen>
     <dimen name="dimension_144">144dp</dimen>
+    <dimen name="dimension_153">153dp</dimen>
     <dimen name="dimension_160">160dp</dimen>
     <dimen name="dimension_168">168dp</dimen>
     <dimen name="dimension_188">188dp</dimen>
-    <dimen name="dimension_530">530dp</dimen>
+    <dimen name="dimension_220">220dp</dimen>
     <dimen name="dimension_225">225dp</dimen>
+    <dimen name="dimension_530">530dp</dimen>
     <dimen name="dimension_556">556dp</dimen>
     <dimen name="dimension_625">625dp</dimen>
 
