@@ -13,16 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.thoughtworks.car.R
 import com.thoughtworks.car.ui.theme.Theme
 import com.thoughtworks.car.vehicle.VehicleViewModel
 import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionControlView
 import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionPanelView
 import com.thoughtworks.car.vehicle.ui.aircondition.FragranceView
 import com.thoughtworks.car.vehicle.ui.atmospherelight.AtmosphereLightView
-import com.thoughtworks.car.vehicle.ui.seat.SeatUiState
 import com.thoughtworks.car.vehicle.ui.seat.SeatView
-import kotlinx.coroutines.flow.MutableStateFlow
 import com.thoughtworks.car.ui.R as CAR_UIR
 
 @Composable
@@ -49,7 +46,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
             Column(modifier = Modifier.weight(SEAT_VIEW_WEIGHT)) {
                 Row {
                     SeatView(
-                        seatUiState = MutableStateFlow(SeatUiState(R.string.driver_seat)),
+                        seatUiState = viewModel.seatRow1LeftUseCase.uiState,
                         toggleMassage = {},
                         toggleSeatCooling = {},
                         toggleSeatHeating = {},
@@ -60,7 +57,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleSeatMemoryPlus = {})
                     Spacer(modifier = Modifier.width(40.dp))
                     SeatView(
-                        seatUiState = MutableStateFlow(SeatUiState(R.string.navigator_seat)),
+                        seatUiState = viewModel.seatRow1RightUseCase.uiState,
                         toggleMassage = {},
                         toggleSeatCooling = {},
                         toggleSeatHeating = {},

@@ -1,5 +1,6 @@
 package com.thoughtworks.car.vehicle.ui.seat
 
+import android.car.VehicleAreaSeat.SEAT_ROW_1_LEFT
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.thoughtworks.car.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.absoluteValue
 
 @Composable
 fun SeatView(
@@ -59,31 +61,34 @@ fun SeatView(
     val uiState by seatUiState.collectAsState()
 
     val seatFeatures = listOf(
-        SeatFeatureState(
+        SeatHeatingCoolingState(
             iconOn = R.drawable.ic_seat_heating_on,
             iconOff = R.drawable.ic_seat_heating_off,
             colorOn = com.thoughtworks.car.ui.R.color.red_CF597C,
             text = R.string.seat_heating,
-            status = uiState.seatHeatingState,
-            level = uiState.seatHeatingLevel,
+            value = when {
+                uiState.seatHeatingCoolingValue > 0 -> uiState.seatHeatingCoolingValue
+                else -> 0
+            },
             onClick = toggleSeatHeating
         ),
-        SeatFeatureState(
+        SeatHeatingCoolingState(
             iconOn = R.drawable.ic_seat_cooling_on,
             iconOff = R.drawable.ic_seat_cooling_off,
             colorOn = com.thoughtworks.car.ui.R.color.light_blue_3476E3,
             text = R.string.seat_cooling,
-            status = uiState.seatCoolingState,
-            level = uiState.seatCoolingLevel,
+            value = when {
+                uiState.seatHeatingCoolingValue < 0 -> uiState.seatHeatingCoolingValue
+                else -> 0
+            },
             onClick = toggleSeatCooling
         ),
-        SeatFeatureState(
+        SeatHeatingCoolingState(
             iconOn = R.drawable.ic_seat_massage_on,
             iconOff = R.drawable.ic_seat_massage_off,
             colorOn = com.thoughtworks.car.ui.R.color.light_green_59CF8F,
             text = R.string.seat_massage,
-            status = uiState.massageState,
-            level = uiState.massageLevel,
+            value = uiState.massageLevel,
             onClick = toggleMassage
         )
     )
@@ -136,7 +141,10 @@ fun SeatView(
                     .fillMaxHeight()
             ) {
                 SeatAngleButton(
-                    seatArea = uiState.seatArea,
+                    seatArea = when (uiState.seatArea) {
+                        SEAT_ROW_1_LEFT -> R.string.driver_seat
+                        else -> R.string.navigator_seat
+                    },
                     onClick = toggleSeatAngle
                 )
             }
@@ -156,8 +164,7 @@ fun SeatView(
                             iconOff = seatFeature.iconOff,
                             text = seatFeature.text,
                             colorOn = seatFeature.colorOn,
-                            status = seatFeature.status,
-                            level = seatFeature.level
+                            value = seatFeature.value.absoluteValue
                         ) {
                             seatFeature.onClick()
                         }
@@ -246,8 +253,7 @@ fun SeatFeatureButton(
     @DrawableRes iconOff: Int,
     @ColorRes colorOn: Int,
     @StringRes text: Int,
-    status: Boolean,
-    level: Int,
+    value: Int,
     onClick: () -> Unit
 ) {
     Button(
@@ -269,7 +275,7 @@ fun SeatFeatureButton(
             Icon(
                 modifier = Modifier
                     .size(43.dp),
-                painter = painterResource(id = if (status) iconOn else iconOff),
+                painter = painterResource(id = if (value > 0) iconOn else iconOff),
                 contentDescription = null,
                 tint = Color.Unspecified
             )
@@ -281,7 +287,7 @@ fun SeatFeatureButton(
                         .height(3.dp)
                         .clip(RectangleShape)
                         .background(
-                            if (status) {
+                            if (value > 0) {
                                 colorResource(id = colorOn)
                             } else {
                                 Color.White
@@ -295,7 +301,7 @@ fun SeatFeatureButton(
                         .height(3.dp)
                         .clip(RectangleShape)
                         .background(
-                            if (status && level > 1) {
+                            if (value > 1) {
                                 colorResource(id = colorOn)
                             } else {
                                 Color.White
@@ -309,7 +315,7 @@ fun SeatFeatureButton(
                         .height(3.dp)
                         .clip(RectangleShape)
                         .background(
-                            if (status && level > 2) {
+                            if (value > 2) {
                                 colorResource(id = colorOn)
                             } else {
                                 Color.White
@@ -346,14 +352,13 @@ fun PreviewSeatView() {
 
 @Preview
 @Composable
-fun PreviewSeatFeatureButton() {
+fun PreviewSeatHeatingCoolingButton() {
     SeatFeatureButton(
         iconOn = R.drawable.ic_seat_heating_on,
         iconOff = R.drawable.ic_seat_heating_off,
         colorOn = com.thoughtworks.car.ui.R.color.red_CF597C,
         text = R.string.seat_heating,
-        status = true,
-        level = 2,
+        value = 2,
         onClick = {}
     )
 }
