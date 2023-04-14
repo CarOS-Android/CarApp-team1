@@ -48,8 +48,8 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                     SeatView(
                         seatUiState = viewModel.seatRow1LeftUseCase.uiState,
                         toggleMassage = {},
-                        toggleSeatCooling = {},
-                        toggleSeatHeating = {},
+                        toggleSeatCooling = { viewModel.seatRow1LeftUseCase.toggleSeatCooling() },
+                        toggleSeatHeating = { viewModel.seatRow1LeftUseCase.toggleSeatHeating() },
                         toggleSeatAngle = {},
                         toggleSeatMemory1 = {},
                         toggleSeatMemory2 = {},
@@ -59,8 +59,8 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                     SeatView(
                         seatUiState = viewModel.seatRow1RightUseCase.uiState,
                         toggleMassage = {},
-                        toggleSeatCooling = {},
-                        toggleSeatHeating = {},
+                        toggleSeatCooling = { viewModel.seatRow1RightUseCase.toggleSeatCooling() },
+                        toggleSeatHeating = { viewModel.seatRow1RightUseCase.toggleSeatHeating() },
                         toggleSeatAngle = {},
                         toggleSeatMemory1 = {},
                         toggleSeatMemory2 = {},

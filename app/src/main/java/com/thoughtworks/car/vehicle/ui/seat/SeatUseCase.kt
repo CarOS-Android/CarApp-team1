@@ -93,6 +93,30 @@ class SeatRow1LeftUseCase @Inject constructor(
         )
     }
 
+    fun toggleSeatHeating() {
+        try {
+            carPropertyManager.setIntProperty(
+                HVAC_SEAT_TEMPERATURE,
+                SEAT_ROW_1_LEFT,
+                _seatHeatingCoolingState.value + 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Heating fail", e)
+        }
+    }
+
+    fun toggleSeatCooling() {
+        try {
+            carPropertyManager.setIntProperty(
+                HVAC_SEAT_TEMPERATURE,
+                SEAT_ROW_1_LEFT,
+                _seatHeatingCoolingState.value - 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Cooling fail", e)
+        }
+    }
+
     override fun onCleared() {
         carPropertyManager.unregisterCallback(seatHeatingCoolingListener)
     }
@@ -143,6 +167,30 @@ class SeatRow1RightUseCase @Inject constructor(
             HVAC_SEAT_TEMPERATURE,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
+    }
+
+    fun toggleSeatHeating() {
+        try {
+            carPropertyManager.setIntProperty(
+                HVAC_SEAT_TEMPERATURE,
+                SEAT_ROW_1_RIGHT,
+                _seatHeatingCoolingState.value + 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Heating fail", e)
+        }
+    }
+
+    fun toggleSeatCooling() {
+        try {
+            carPropertyManager.setIntProperty(
+                HVAC_SEAT_TEMPERATURE,
+                SEAT_ROW_1_RIGHT,
+                _seatHeatingCoolingState.value - 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Cooling fail", e)
+        }
     }
 
     override fun onCleared() {
