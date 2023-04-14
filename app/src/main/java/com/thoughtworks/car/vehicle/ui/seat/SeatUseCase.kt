@@ -4,6 +4,7 @@ import android.car.VehicleAreaSeat.SEAT_ROW_1_LEFT
 import android.car.VehicleAreaSeat.SEAT_ROW_1_RIGHT
 import android.car.VehicleAreaSeat.SEAT_UNKNOWN
 import android.car.VehiclePropertyIds.HVAC_SEAT_TEMPERATURE
+import android.car.VehiclePropertyIds.SEAT_TILT_POS
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import androidx.annotation.ColorRes
@@ -52,6 +53,7 @@ class SeatRow1LeftUseCase @Inject constructor(
 ) : BaseUseCase {
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _seatTiltState: MutableStateFlow<Int> = MutableStateFlow(0)
     val uiState: StateFlow<SeatUiState> = combine(
         _seatAreaState, _seatHeatingCoolingState
     ) { _, seatHeatingCoolingState ->
@@ -85,10 +87,29 @@ class SeatRow1LeftUseCase @Inject constructor(
             }
         }
 
+    private var seatTiltListener =
+        object : CarPropertyManager.CarPropertyEventCallback {
+            override fun onChangeEvent(value: CarPropertyValue<Any>) {
+                Logger.i("Car seat tilt state property value changed $value")
+                if (value.areaId == SEAT_ROW_1_LEFT) {
+                    _seatTiltState.value = value.value as Int
+                }
+            }
+
+            override fun onErrorEvent(propId: Int, zone: Int) {
+                Logger.w("Received error car property event, propId=$propId")
+            }
+        }
+
     init {
         carPropertyManager.registerCallback(
             seatHeatingCoolingListener,
             HVAC_SEAT_TEMPERATURE,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+        carPropertyManager.registerCallback(
+            seatTiltListener,
+            SEAT_TILT_POS,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
     }
@@ -117,8 +138,21 @@ class SeatRow1LeftUseCase @Inject constructor(
         }
     }
 
+    fun toggleSeatTilt() {
+        try {
+            carPropertyManager.setIntProperty(
+                SEAT_TILT_POS,
+                SEAT_ROW_1_LEFT,
+                _seatTiltState.value + 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Tilt fail", e)
+        }
+    }
+
     override fun onCleared() {
         carPropertyManager.unregisterCallback(seatHeatingCoolingListener)
+        carPropertyManager.unregisterCallback(seatTiltListener)
     }
 }
 
@@ -128,6 +162,7 @@ class SeatRow1RightUseCase @Inject constructor(
 ) : BaseUseCase {
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _seatTiltState: MutableStateFlow<Int> = MutableStateFlow(0)
     val uiState: StateFlow<SeatUiState> = combine(
         _seatAreaState, _seatHeatingCoolingState
     ) { _, seatHeatingCoolingState ->
@@ -161,10 +196,29 @@ class SeatRow1RightUseCase @Inject constructor(
             }
         }
 
+    private var seatTiltListener =
+        object : CarPropertyManager.CarPropertyEventCallback {
+            override fun onChangeEvent(value: CarPropertyValue<Any>) {
+                Logger.i("Car seat tilt state property value changed $value")
+                if (value.areaId == SEAT_ROW_1_RIGHT) {
+                    _seatTiltState.value = value.value as Int
+                }
+            }
+
+            override fun onErrorEvent(propId: Int, zone: Int) {
+                Logger.w("Received error car property event, propId=$propId")
+            }
+        }
+
     init {
         carPropertyManager.registerCallback(
             seatHeatingCoolingListener,
             HVAC_SEAT_TEMPERATURE,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+        carPropertyManager.registerCallback(
+            seatTiltListener,
+            SEAT_TILT_POS,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
     }
@@ -193,7 +247,20 @@ class SeatRow1RightUseCase @Inject constructor(
         }
     }
 
+    fun toggleSeatTilt() {
+        try {
+            carPropertyManager.setIntProperty(
+                SEAT_TILT_POS,
+                SEAT_ROW_1_RIGHT,
+                _seatTiltState.value + 1
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Tilt fail", e)
+        }
+    }
+
     override fun onCleared() {
         carPropertyManager.unregisterCallback(seatHeatingCoolingListener)
+        carPropertyManager.unregisterCallback(seatTiltListener)
     }
 }

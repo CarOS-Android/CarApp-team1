@@ -46,13 +46,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.absoluteValue
 
+private const val SEAT_FEATURE_BUTTON_OFFSET = -8
+
 @Composable
 fun SeatView(
     seatUiState: StateFlow<SeatUiState>,
     toggleSeatHeating: () -> Unit,
     toggleSeatCooling: () -> Unit,
     toggleMassage: () -> Unit,
-    toggleSeatAngle: () -> Unit,
+    toggleSeatTilt: () -> Unit,
     toggleSeatMemory1: () -> Unit,
     toggleSeatMemory2: () -> Unit,
     toggleSeatMemory3: () -> Unit,
@@ -140,12 +142,12 @@ fun SeatView(
                     .wrapContentWidth()
                     .fillMaxHeight()
             ) {
-                SeatAngleButton(
+                SeatTitlButton(
                     seatArea = when (uiState.seatArea) {
                         SEAT_ROW_1_LEFT -> R.string.driver_seat
                         else -> R.string.navigator_seat
                     },
-                    onClick = toggleSeatAngle
+                    onClick = toggleSeatTilt
                 )
             }
             Column(
@@ -177,7 +179,7 @@ fun SeatView(
                     for ((index, item) in seatMemories.withIndex()) {
                         SeatMemoryButton(
                             modifier = Modifier
-                                .offset(x = if (index > 0) (-8 * index).dp else 0.dp),
+                                .offset(x = if (index > 0) (SEAT_FEATURE_BUTTON_OFFSET * index).dp else 0.dp),
                             iconOn = item.iconOn,
                             iconOff = item.iconOff,
                             status = item.status
@@ -192,13 +194,14 @@ fun SeatView(
 }
 
 @Composable
-fun SeatAngleButton(@StringRes seatArea: Int, onClick: () -> Unit) {
+fun SeatTitlButton(@StringRes seatArea: Int, onClick: () -> Unit) {
     Button(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(
                 id = com.thoughtworks.car.ui.R.color.grey_161616
             )
-        ), onClick = onClick
+        ),
+        onClick = onClick
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -257,7 +260,11 @@ fun SeatFeatureButton(
     onClick: () -> Unit
 ) {
     Button(
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = com.thoughtworks.car.ui.R.color.grey_161616)),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = colorResource(
+                id = com.thoughtworks.car.ui.R.color.grey_161616
+            )
+        ),
         onClick = onClick
     ) {
         Column(
@@ -342,7 +349,7 @@ fun PreviewSeatView() {
         toggleMassage = {},
         toggleSeatCooling = {},
         toggleSeatHeating = {},
-        toggleSeatAngle = {},
+        toggleSeatTilt = {},
         toggleSeatMemory1 = {},
         toggleSeatMemory2 = {},
         toggleSeatMemory3 = {},
@@ -378,9 +385,8 @@ fun PreviewSeatMemoryButton() {
 @Preview
 @Composable
 fun PreviewSeatAngleButton() {
-    SeatAngleButton(
+    SeatTitlButton(
         seatArea = R.string.driver_seat,
         onClick = {}
     )
 }
-

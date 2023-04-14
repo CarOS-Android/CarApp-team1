@@ -50,22 +50,24 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleMassage = {},
                         toggleSeatCooling = { viewModel.seatRow1LeftUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1LeftUseCase.toggleSeatHeating() },
-                        toggleSeatAngle = {},
+                        toggleSeatTilt = { viewModel.seatRow1LeftUseCase.toggleSeatTilt() },
                         toggleSeatMemory1 = {},
                         toggleSeatMemory2 = {},
                         toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = {})
+                        toggleSeatMemoryPlus = {}
+                    )
                     Spacer(modifier = Modifier.width(40.dp))
                     SeatView(
                         seatUiState = viewModel.seatRow1RightUseCase.uiState,
                         toggleMassage = {},
                         toggleSeatCooling = { viewModel.seatRow1RightUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1RightUseCase.toggleSeatHeating() },
-                        toggleSeatAngle = {},
+                        toggleSeatTilt = { viewModel.seatRow1RightUseCase.toggleSeatTilt() },
                         toggleSeatMemory1 = {},
                         toggleSeatMemory2 = {},
                         toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = {})
+                        toggleSeatMemoryPlus = {}
+                    )
                 }
             }
             Column(modifier = Modifier.weight(ATMOSPHERE_LIGHT_VIEW_WEIGHT)) {
