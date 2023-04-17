@@ -30,7 +30,7 @@ exoplayer = "2.18.3"
 fragment = "1.5.4"
 router = "42b1bcd3de"
 navigation = "1.4.0"
-hmi-ui = "1.0.3"
+hmi-ui = "1.0.9"
 car-lib = "1.0.1"
 
 # test
