@@ -142,7 +142,7 @@ fun SeatView(
                     .wrapContentWidth()
                     .fillMaxHeight()
             ) {
-                SeatTitlButton(
+                SeatTiltButton(
                     seatArea = when (uiState.seatArea) {
                         SEAT_ROW_1_LEFT -> R.string.driver_seat
                         else -> R.string.navigator_seat
@@ -194,7 +194,7 @@ fun SeatView(
 }
 
 @Composable
-fun SeatTitlButton(@StringRes seatArea: Int, onClick: () -> Unit) {
+fun SeatTiltButton(@StringRes seatArea: Int, onClick: () -> Unit) {
     Button(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(
@@ -385,7 +385,7 @@ fun PreviewSeatMemoryButton() {
 @Preview
 @Composable
 fun PreviewSeatAngleButton() {
-    SeatTitlButton(
+    SeatTiltButton(
         seatArea = R.string.driver_seat,
         onClick = {}
     )
