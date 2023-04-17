@@ -3,6 +3,7 @@ package com.thoughtworks.car.dashboard.ui.hvac
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.container.stepper.Stepper
@@ -38,9 +40,9 @@ fun HvacFanSpeedController() {
     val resources = LocalContext.current.resources
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ComposeBlindHMILoopStepper(
-            modifier = Modifier.size(dimensionResource(id = R.dimen.dimension_118)),
+            modifier = Modifier.size(dimensionResource(id = R.dimen.dimension_144)),
             centerHotspotRadius = dimensionResource(id = R.dimen.dimension_26),
-            centerBackgroundRadius = dimensionResource(id = R.dimen.dimension_52),
+            centerBackgroundRadius = dimensionResource(id = R.dimen.dimension_72),
             centerBackgroundRes = CAR_R.drawable.ic_fan_speed_center_bg,
             stepOrientation = Stepper.CLOCKWISE,
             steps = 4,
@@ -52,8 +54,8 @@ fun HvacFanSpeedController() {
             border = {
                 border(context) {
                     imageRes = CAR_R.drawable.ic_fan_speed_center_border
-                    expandRadius = resources.getDimensionPixelSize(R.dimen.dimension_52)
-                    radius = resources.getDimensionPixelSize(R.dimen.dimension_44)
+                    expandRadius = resources.getDimensionPixelSize(R.dimen.dimension_72)
+                    radius = resources.getDimensionPixelSize(R.dimen.dimension_58)
                     drawOrder = getDrawOrder() - 1
                 }
             },
@@ -61,7 +63,7 @@ fun HvacFanSpeedController() {
                 indicator(context) {
                     imageRes = CAR_R.drawable.ic_pointer_144
                     drawOrder = getDrawOrder()
-                    radius = resources.getDimensionPixelSize(R.dimen.dimension_48)
+                    radius = resources.getDimensionPixelSize(R.dimen.dimension_72)
                     visible = true
                 }
             },
@@ -70,7 +72,7 @@ fun HvacFanSpeedController() {
                     contentFactory = {
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier.size(dimensionResource(R.dimen.dimension_128)),
+                            modifier = Modifier.size(dimensionResource(R.dimen.dimension_72)),
                         ) {
                             Image(
                                 painter = painterResource(
@@ -93,10 +95,11 @@ fun HvacFanSpeedController() {
                 viewModel.setHvacFanSpeed(stepperValue.toInt())
             }
         )
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = "风量",
             color = Color.Gray,
-            fontSize = 12.sp
+            fontSize = 16.sp
         )
     }
 }

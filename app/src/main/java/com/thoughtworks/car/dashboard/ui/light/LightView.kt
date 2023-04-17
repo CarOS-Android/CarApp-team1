@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -30,7 +31,12 @@ fun LightView(
     toggleHighBeamLight: () -> Unit
 ) {
     val uiState by lightUiState.collectAsState()
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = dimensionResource(CAR_UIR.dimen.dimension_90)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
             modifier = modifier.clickable { switchCenterAreaState() },
             painter = painterResource(id = R.drawable.car_light_controller), contentDescription = ""

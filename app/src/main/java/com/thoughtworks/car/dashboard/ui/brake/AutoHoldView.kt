@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -31,7 +30,6 @@ import com.thoughtworks.car.ui.R as CAR_UIR
 
 private const val BLACK_COLOR = 0xFF1B1C1F
 private const val GREY_COLOR = 0xFF2E3439
-private const val SCALE_RATIO = 0.67f
 
 @Composable
 fun AutoHoldView(
@@ -64,10 +62,9 @@ fun AutoHoldView(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.auto_hold),
-                    contentDescription = null,
-                    modifier = Modifier.scale(SCALE_RATIO)
+                    contentDescription = null
                 )
-                Spacer(modifier = Modifier.padding(vertical = 1.dp))
+                Spacer(modifier = Modifier.padding(vertical = 6.dp))
                 Image(
                     painter = painterResource(
                         id = if (uiState.autoHoldState) {
@@ -76,8 +73,7 @@ fun AutoHoldView(
                             R.drawable.auto_hold_off
                         }
                     ),
-                    contentDescription = null,
-                    modifier = Modifier.scale(SCALE_RATIO)
+                    contentDescription = null
                 )
             }
         }
