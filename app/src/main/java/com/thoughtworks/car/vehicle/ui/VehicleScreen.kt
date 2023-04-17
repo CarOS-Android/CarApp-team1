@@ -70,6 +70,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                     )
                 }
             }
+            Spacer(modifier = Modifier.width(40.dp))
             Column(modifier = Modifier.weight(ATMOSPHERE_LIGHT_VIEW_WEIGHT)) {
                 AtmosphereLightView()
             }
