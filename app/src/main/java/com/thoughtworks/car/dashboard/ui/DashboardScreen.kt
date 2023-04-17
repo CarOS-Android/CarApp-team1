@@ -1,6 +1,7 @@
 package com.thoughtworks.car.dashboard.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,22 +44,18 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             .padding(horizontal = dimensionResource(CAR_UIR.dimen.dimension_50))
     ) {
         Column(modifier = Modifier.weight(DOOR_VIEW_WEIGHT)) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 TimeView(timeUiState = viewModel.timeUseCase.uiState)
-                Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_40)))
+                Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_20)))
                 VoiceView(voiceUiState = viewModel.voiceUseCase.uiState)
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.padding(dimensionResource(CAR_UIR.dimen.dimension_90)))
                 IgnitionView(ignitionUiState = viewModel.ignitionUseCase.uiState)
             }
             Box(
                 modifier = Modifier
-                    .padding(
-                        start = dimensionResource(CAR_UIR.dimen.dimension_144),
-                        top = dimensionResource(CAR_UIR.dimen.dimension_80)
-                    )
+                    .padding(start = dimensionResource(CAR_UIR.dimen.dimension_123))
                     .width(dimensionResource(CAR_UIR.dimen.dimension_625))
-                    .height(dimensionResource(CAR_UIR.dimen.dimension_530)),
-                contentAlignment = Alignment.Center
+                    .height(dimensionResource(CAR_UIR.dimen.dimension_530))
             ) {
                 if (uiState.value.centerAreaState == CenterAreaState.LOCK_CONTROLLER) {
                     DoorView(
@@ -81,11 +78,12 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_80)))
+                Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_50)))
                 HvacView()
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     ParkingBrakeView(
                         parkingBrakeUiState = viewModel.parkingBrakeUseCase.uiState,
@@ -101,12 +99,16 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                 }
             }
         }
-        Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_80)))
-        Column(modifier = Modifier.weight(NAVI_VIEW_WEIGHT)) {
+        Spacer(modifier = Modifier.width(dimensionResource(CAR_UIR.dimen.dimension_30)))
+        Column(
+            modifier = Modifier
+                .weight(NAVI_VIEW_WEIGHT)
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Spacer(modifier = Modifier.height(dimensionResource(CAR_UIR.dimen.dimension_26)))
             NaviView(naviUiState = viewModel.naviUseCase.uiState)
-            Spacer(modifier = Modifier.height(dimensionResource(CAR_UIR.dimen.dimension_8)))
             MediaView(mediaUiState = viewModel.mediaUseCase.uiState)
-            Spacer(modifier = Modifier.height(dimensionResource(CAR_UIR.dimen.dimension_8)))
             StatusView(
                 statusUiState = viewModel.statusUseCase.uiState,
                 toggleWindowLock = { viewModel.statusUseCase.toggleWindowLock() }

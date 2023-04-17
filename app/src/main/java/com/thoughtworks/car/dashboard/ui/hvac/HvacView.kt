@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -38,11 +39,15 @@ import com.thoughtworks.car.ui.R as UiR
 @Composable
 fun HvacView(modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
-        Image(painter = painterResource(id = R.drawable.bg_hvac), contentDescription = "")
+        Image(
+            modifier = modifier.size(width = 663.dp, height = 228.dp),
+            painter = painterResource(id = R.drawable.bg_hvac),
+            contentDescription = ""
+        )
         Row(
             modifier = Modifier.matchParentSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             HvacTemperatureView(
                 driverSeat = true,
@@ -67,9 +72,9 @@ private fun HvacTemperatureView(driverSeat: Boolean, description: String) {
         val isTemperatureDockVisible = remember { mutableStateOf(false) }
 
         ComposeBlindHMILoopStepper(
-            modifier = Modifier.size(118.dp),
+            modifier = Modifier.size(144.dp),
             centerHotspotRadius = 26.dp,
-            centerBackgroundRadius = 52.dp,
+            centerBackgroundRadius = 72.dp,
             centerBackgroundRes = R.drawable.ic_dock_temperature_bg,
             stepOrientation = Stepper.CLOCKWISE,
             steps = 24,
@@ -81,8 +86,8 @@ private fun HvacTemperatureView(driverSeat: Boolean, description: String) {
             border = {
                 border(context) {
                     imageRes = R.drawable.ic_dock_temperature_scale
-                    expandRadius = resources.getDimensionPixelSize(UiR.dimen.dimension_52)
-                    radius = resources.getDimensionPixelSize(UiR.dimen.dimension_30)
+                    expandRadius = resources.getDimensionPixelSize(UiR.dimen.dimension_72)
+                    radius = resources.getDimensionPixelSize(UiR.dimen.dimension_52)
                     drawOrder = getDrawOrder() - 1
                 }
             },
@@ -90,7 +95,7 @@ private fun HvacTemperatureView(driverSeat: Boolean, description: String) {
                 indicator(context) {
                     imageRes = R.drawable.ic_pointer_144
                     drawOrder = getDrawOrder() + 1
-                    radius = resources.getDimensionPixelSize(UiR.dimen.dimension_48)
+                    radius = resources.getDimensionPixelSize(UiR.dimen.dimension_72)
                     visible = true
                     onActive = {
                         isTemperatureDockVisible.value = true
@@ -153,10 +158,11 @@ private fun HvacTemperatureView(driverSeat: Boolean, description: String) {
                 Logger.i("onStepHover: step = $step")
             },
         )
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = description,
             color = Color.Gray,
-            fontSize = 12.sp
+            fontSize = 16.sp
         )
     }
 }
