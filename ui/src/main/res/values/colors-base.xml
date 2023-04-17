@@ -14,14 +14,17 @@
     <color name="red_250">#FFCF6679</color>
     <color name="red_700">#FFB00020</color>
     <color name="red_900">#FFFF0020</color>
+    <color name="red_CF597C">#CF597C</color>
 
     <!-- Light Green -->
     <color name="light_green_200">#C5E1A5</color>
     <color name="light_green_700">#689F38</color>
+    <color name="light_green_59CF8F">#59CF8F</color>
 
     <!-- Light Blue -->
     <color name="light_blue_50">#E1F5FE</color>
     <color name="light_blue_300">#4FC3F7</color>
+    <color name="light_blue_3476E3">#3476E3</color>
 
     <!-- White -->
     <color name="white">#FFFFFFFF</color>
@@ -35,6 +38,8 @@
     <color name="grey_50" tools:ignore="MissingDefaultResource">#FFFAFAFA</color>
     <color name="grey_100">#FFF5F5F5</color>
     <color name="grey_200">#FFEEEEEE</color>
+    <color name="grey_292929">#292929</color>
+    <color name="grey_161616">#161616</color>
     <color name="grey_300" tools:ignore="MissingDefaultResource">#FFE0E0E0</color>
     <color name="grey_400" tools:ignore="MissingDefaultResource">#A0AABC</color>
     <color name="grey_500" tools:ignore="MissingDefaultResource">#FF9E9E9E</color>
