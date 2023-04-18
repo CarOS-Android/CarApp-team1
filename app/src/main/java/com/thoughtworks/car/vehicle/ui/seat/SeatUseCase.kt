@@ -80,7 +80,7 @@ open class SeatUseCase(
         object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<Any>) {
                 Logger.i("Car seat heating cooling state property value changed $value")
-                if (value.areaId == SEAT_ROW_1_LEFT) {
+                if (value.areaId == seatArea) {
                     _seatHeatingCoolingState.value = value.value as Int
                 }
             }
