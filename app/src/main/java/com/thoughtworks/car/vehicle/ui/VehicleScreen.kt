@@ -51,10 +51,10 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleSeatCooling = { viewModel.seatRow1LeftUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1LeftUseCase.toggleSeatHeating() },
                         toggleSeatTilt = { viewModel.seatRow1LeftUseCase.toggleSeatTilt() },
-                        toggleSeatMemory1 = {},
+                        toggleSeatMemory1 = { viewModel.seatRow1LeftUseCase.toggleSeatMemory1() },
                         toggleSeatMemory2 = {},
                         toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = {}
+                        toggleSeatMemoryPlus = { viewModel.seatRow1LeftUseCase.toggleSeatMemoryPlus() }
                     )
                     Spacer(modifier = Modifier.width(40.dp))
                     SeatView(
@@ -63,10 +63,10 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleSeatCooling = { viewModel.seatRow1RightUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1RightUseCase.toggleSeatHeating() },
                         toggleSeatTilt = { viewModel.seatRow1RightUseCase.toggleSeatTilt() },
-                        toggleSeatMemory1 = {},
+                        toggleSeatMemory1 = { viewModel.seatRow1RightUseCase.toggleSeatMemory1() },
                         toggleSeatMemory2 = {},
                         toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = {}
+                        toggleSeatMemoryPlus = { viewModel.seatRow1RightUseCase.toggleSeatMemoryPlus() }
                     )
                 }
             }
@@ -85,5 +85,5 @@ private const val AIR_CONDITION_CONTROL_VIEW_WEIGHT = 1f
 private const val AIR_CONDITION_PANEL_VIEW_WEIGHT = 5f
 private const val FRAGRANCE_VIEW_WEIGHT = 3f
 
-private const val SEAT_VIEW_WEIGHT = 8F
+private const val SEAT_VIEW_WEIGHT = 9F
 private const val ATMOSPHERE_LIGHT_VIEW_WEIGHT = 2F

@@ -37,10 +37,10 @@ fun DoorView(
         val (doorButton, doorHoodButton, doorRearButton) = createRefs()
         IconButton(
             modifier = Modifier
-                .size(dimensionResource(CAR_UIR.dimen.dimension_48))
+                .size(dimensionResource(CAR_UIR.dimen.dimension_50))
                 .constrainAs(doorRearButton) {
-                    top.linkTo(parent.top, margin = 20.dp)
-                    end.linkTo(parent.end, margin = 70.dp)
+                    top.linkTo(parent.top, margin = 70.dp)
+                    end.linkTo(parent.end, margin = 10.dp)
                 },
             onClick = { toggleRearDoor() }
         ) {
@@ -53,9 +53,13 @@ fun DoorView(
 
         Image(
             modifier = Modifier
+                .size(
+                    width = dimensionResource(CAR_UIR.dimen.dimension_625),
+                    height = dimensionResource(CAR_UIR.dimen.dimension_220)
+                )
                 .constrainAs(car) {
-                    top.linkTo(doorRearButton.bottom, margin = 4.dp)
-                    start.linkTo(parent.start, margin = 70.dp)
+                    top.linkTo(doorRearButton.bottom)
+                    start.linkTo(parent.start, margin = 18.dp)
                     end.linkTo(doorRearButton.end)
                 }
                 .clickable { switchCenterAreaState() },
@@ -64,10 +68,10 @@ fun DoorView(
 
         IconButton(
             modifier = Modifier
-                .size(dimensionResource(CAR_UIR.dimen.dimension_48))
+                .size(dimensionResource(CAR_UIR.dimen.dimension_50))
                 .constrainAs(doorHoodButton) {
-                    top.linkTo(parent.top, margin = 50.dp)
-                    start.linkTo(parent.start, margin = 80.dp)
+                    top.linkTo(parent.top, margin = 130.dp)
+                    start.linkTo(parent.start)
                 },
             onClick = { toggleHoodDoor() }
         ) {
