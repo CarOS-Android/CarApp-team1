@@ -32,5 +32,4 @@ object ApplicationModule {
     fun provideSeatSharedPref(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences("SEAT_PREF", Context.MODE_PRIVATE)
     }
-
 }

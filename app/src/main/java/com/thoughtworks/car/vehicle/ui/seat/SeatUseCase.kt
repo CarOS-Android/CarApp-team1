@@ -48,10 +48,11 @@ data class SeatMemoryState(
     val onClick: () -> Unit
 )
 
-class SeatRow1LeftUseCase @Inject constructor(
+open class SeatUseCase(
     @ApplicationScope private val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager,
-    private val seatSharedPref: SharedPreferences
+    private val seatSharedPref: SharedPreferences,
+    private val seatArea: Int
 ) : BaseUseCase {
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
@@ -60,17 +61,17 @@ class SeatRow1LeftUseCase @Inject constructor(
         _seatAreaState, _seatHeatingCoolingState
     ) { _, seatHeatingCoolingState ->
         SeatUiState(
-            seatArea = SEAT_ROW_1_LEFT,
+            seatArea = seatArea,
             seatHeatingCoolingValue = seatHeatingCoolingState
         )
     }.stateIn(
         coroutineScope,
         WhileUiSubscribed,
         SeatUiState(
-            seatArea = SEAT_ROW_1_LEFT,
+            seatArea = seatArea,
             seatHeatingCoolingValue = carPropertyManager.getIntProperty(
                 HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_LEFT
+                seatArea
             )
         )
     )
@@ -93,7 +94,7 @@ class SeatRow1LeftUseCase @Inject constructor(
         object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<Any>) {
                 Logger.i("Car seat tilt state property value changed $value")
-                if (value.areaId == SEAT_ROW_1_LEFT) {
+                if (value.areaId == seatArea) {
                     _seatTiltState.value = value.value as Int
                 }
             }
@@ -120,7 +121,7 @@ class SeatRow1LeftUseCase @Inject constructor(
         try {
             carPropertyManager.setIntProperty(
                 HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_LEFT,
+                seatArea,
                 _seatHeatingCoolingState.value + 1
             )
         } catch (e: IllegalArgumentException) {
@@ -132,7 +133,7 @@ class SeatRow1LeftUseCase @Inject constructor(
         try {
             carPropertyManager.setIntProperty(
                 HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_LEFT,
+                seatArea,
                 _seatHeatingCoolingState.value - 1
             )
         } catch (e: IllegalArgumentException) {
@@ -144,7 +145,7 @@ class SeatRow1LeftUseCase @Inject constructor(
         try {
             carPropertyManager.setIntProperty(
                 SEAT_TILT_POS,
-                SEAT_ROW_1_LEFT,
+                seatArea,
                 _seatTiltState.value + 1
             )
         } catch (e: IllegalArgumentException) {
@@ -156,7 +157,7 @@ class SeatRow1LeftUseCase @Inject constructor(
         try {
             carPropertyManager.setIntProperty(
                 SEAT_TILT_POS,
-                SEAT_ROW_1_LEFT,
+                seatArea,
                 value
             )
         } catch (e: IllegalArgumentException) {
@@ -167,10 +168,10 @@ class SeatRow1LeftUseCase @Inject constructor(
     fun toggleSeatMemoryPlus() {
         with(seatSharedPref.edit()) {
             putInt(
-                "save_row_1_left_seat_position_key",
+                "save_seat_area_${seatArea}_tilt_position_key",
                 carPropertyManager.getIntProperty(
                     SEAT_TILT_POS,
-                    SEAT_ROW_1_LEFT
+                    seatArea
                 )
             )
             apply()
@@ -178,7 +179,12 @@ class SeatRow1LeftUseCase @Inject constructor(
     }
 
     fun toggleSeatMemory1() {
-        toggleSeatTilt(seatSharedPref.getInt("save_row_1_left_seat_position_key", SEAT_UNKNOWN))
+        toggleSeatTilt(
+            seatSharedPref.getInt(
+                "save_seat_area_${seatArea}_tilt_position_key",
+                SEAT_UNKNOWN
+            )
+        )
     }
 
     override fun onCleared() {
@@ -186,142 +192,25 @@ class SeatRow1LeftUseCase @Inject constructor(
         carPropertyManager.unregisterCallback(seatTiltListener)
     }
 }
+
+class SeatRow1LeftUseCase @Inject constructor(
+    @ApplicationScope private val coroutineScope: CoroutineScope,
+    carPropertyManager: CarPropertyManager,
+    seatSharedPref: SharedPreferences
+) : SeatUseCase(
+    coroutineScope = coroutineScope,
+    carPropertyManager = carPropertyManager,
+    seatSharedPref = seatSharedPref,
+    seatArea = SEAT_ROW_1_LEFT
+)
 
 class SeatRow1RightUseCase @Inject constructor(
     @ApplicationScope private val coroutineScope: CoroutineScope,
-    private val carPropertyManager: CarPropertyManager,
-    private val seatSharedPref: SharedPreferences
-) : BaseUseCase {
-    private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
-    private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
-    private val _seatTiltState: MutableStateFlow<Int> = MutableStateFlow(0)
-    val uiState: StateFlow<SeatUiState> = combine(
-        _seatAreaState, _seatHeatingCoolingState
-    ) { _, seatHeatingCoolingState ->
-        SeatUiState(
-            seatArea = SEAT_ROW_1_RIGHT,
-            seatHeatingCoolingValue = seatHeatingCoolingState
-        )
-    }.stateIn(
-        coroutineScope,
-        WhileUiSubscribed,
-        SeatUiState(
-            seatArea = SEAT_ROW_1_RIGHT,
-            seatHeatingCoolingValue = carPropertyManager.getIntProperty(
-                HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_RIGHT
-            )
-        )
-    )
-
-    private var seatHeatingCoolingListener =
-        object : CarPropertyManager.CarPropertyEventCallback {
-            override fun onChangeEvent(value: CarPropertyValue<Any>) {
-                Logger.i("Car seat heating cooling state property value changed $value")
-                if (value.areaId == SEAT_ROW_1_RIGHT) {
-                    _seatHeatingCoolingState.value = value.value as Int
-                }
-            }
-
-            override fun onErrorEvent(propId: Int, zone: Int) {
-                Logger.w("Received error car property event, propId=$propId")
-            }
-        }
-
-    private var seatTiltListener =
-        object : CarPropertyManager.CarPropertyEventCallback {
-            override fun onChangeEvent(value: CarPropertyValue<Any>) {
-                Logger.i("Car seat tilt state property value changed $value")
-                if (value.areaId == SEAT_ROW_1_RIGHT) {
-                    _seatTiltState.value = value.value as Int
-                }
-            }
-
-            override fun onErrorEvent(propId: Int, zone: Int) {
-                Logger.w("Received error car property event, propId=$propId")
-            }
-        }
-
-    init {
-        carPropertyManager.registerCallback(
-            seatHeatingCoolingListener,
-            HVAC_SEAT_TEMPERATURE,
-            CarPropertyManager.SENSOR_RATE_ONCHANGE
-        )
-        carPropertyManager.registerCallback(
-            seatTiltListener,
-            SEAT_TILT_POS,
-            CarPropertyManager.SENSOR_RATE_ONCHANGE
-        )
-    }
-
-    fun toggleSeatHeating() {
-        try {
-            carPropertyManager.setIntProperty(
-                HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_RIGHT,
-                _seatHeatingCoolingState.value + 1
-            )
-        } catch (e: IllegalArgumentException) {
-            Logger.e("set Right Seat Heating fail", e)
-        }
-    }
-
-    fun toggleSeatCooling() {
-        try {
-            carPropertyManager.setIntProperty(
-                HVAC_SEAT_TEMPERATURE,
-                SEAT_ROW_1_RIGHT,
-                _seatHeatingCoolingState.value - 1
-            )
-        } catch (e: IllegalArgumentException) {
-            Logger.e("set Right Seat Cooling fail", e)
-        }
-    }
-
-    fun toggleSeatTilt() {
-        try {
-            carPropertyManager.setIntProperty(
-                SEAT_TILT_POS,
-                SEAT_ROW_1_RIGHT,
-                _seatTiltState.value + 1
-            )
-        } catch (e: IllegalArgumentException) {
-            Logger.e("set Right Seat Tilt fail", e)
-        }
-    }
-
-    private fun toggleSeatTilt(value: Int) {
-        try {
-            carPropertyManager.setIntProperty(
-                SEAT_TILT_POS,
-                SEAT_ROW_1_RIGHT,
-                value
-            )
-        } catch (e: IllegalArgumentException) {
-            Logger.e("set Right Seat Tilt fail", e)
-        }
-    }
-
-    fun toggleSeatMemoryPlus() {
-        with(seatSharedPref.edit()) {
-            putInt(
-                "save_row_1_right_seat_position_key",
-                carPropertyManager.getIntProperty(
-                    SEAT_TILT_POS,
-                    SEAT_ROW_1_RIGHT
-                )
-            )
-            apply()
-        }
-    }
-
-    fun toggleSeatMemory1() {
-        toggleSeatTilt(seatSharedPref.getInt("save_row_1_right_seat_position_key", SEAT_UNKNOWN))
-    }
-
-    override fun onCleared() {
-        carPropertyManager.unregisterCallback(seatHeatingCoolingListener)
-        carPropertyManager.unregisterCallback(seatTiltListener)
-    }
-}
+    carPropertyManager: CarPropertyManager,
+    seatSharedPref: SharedPreferences
+) : SeatUseCase(
+    coroutineScope = coroutineScope,
+    carPropertyManager = carPropertyManager,
+    seatSharedPref = seatSharedPref,
+    seatArea = SEAT_ROW_1_RIGHT
+)
