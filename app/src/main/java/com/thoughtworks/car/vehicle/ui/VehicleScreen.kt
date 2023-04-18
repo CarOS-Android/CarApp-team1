@@ -85,5 +85,5 @@ private const val AIR_CONDITION_CONTROL_VIEW_WEIGHT = 1f
 private const val AIR_CONDITION_PANEL_VIEW_WEIGHT = 5f
 private const val FRAGRANCE_VIEW_WEIGHT = 3f
 
-private const val SEAT_VIEW_WEIGHT = 8F
+private const val SEAT_VIEW_WEIGHT = 9F
 private const val ATMOSPHERE_LIGHT_VIEW_WEIGHT = 2F

@@ -31,6 +31,7 @@
     <dimen name="dimension_128">128dp</dimen>
     <dimen name="dimension_144">144dp</dimen>
     <dimen name="dimension_150">150dp</dimen>
+    <dimen name="dimension_153">153dp</dimen>
     <dimen name="dimension_160">160dp</dimen>
     <dimen name="dimension_168">168dp</dimen>
     <dimen name="dimension_188">188dp</dimen>
