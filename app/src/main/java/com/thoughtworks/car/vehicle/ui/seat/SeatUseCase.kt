@@ -7,6 +7,7 @@ import android.car.VehiclePropertyIds.HVAC_SEAT_TEMPERATURE
 import android.car.VehiclePropertyIds.SEAT_TILT_POS
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import android.content.SharedPreferences
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -50,6 +51,7 @@ data class SeatMemoryState(
 class SeatRow1LeftUseCase @Inject constructor(
     @ApplicationScope private val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager,
+    private val seatSharedPref: SharedPreferences
 ) : BaseUseCase {
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
@@ -150,6 +152,35 @@ class SeatRow1LeftUseCase @Inject constructor(
         }
     }
 
+    private fun toggleSeatTilt(value: Int) {
+        try {
+            carPropertyManager.setIntProperty(
+                SEAT_TILT_POS,
+                SEAT_ROW_1_LEFT,
+                value
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Tilt fail", e)
+        }
+    }
+
+    fun toggleSeatMemoryPlus() {
+        with(seatSharedPref.edit()) {
+            putInt(
+                "save_row_1_left_seat_position_key",
+                carPropertyManager.getIntProperty(
+                    SEAT_TILT_POS,
+                    SEAT_ROW_1_LEFT
+                )
+            )
+            apply()
+        }
+    }
+
+    fun toggleSeatMemory1() {
+        toggleSeatTilt(seatSharedPref.getInt("save_row_1_left_seat_position_key", SEAT_UNKNOWN))
+    }
+
     override fun onCleared() {
         carPropertyManager.unregisterCallback(seatHeatingCoolingListener)
         carPropertyManager.unregisterCallback(seatTiltListener)
@@ -159,6 +190,7 @@ class SeatRow1LeftUseCase @Inject constructor(
 class SeatRow1RightUseCase @Inject constructor(
     @ApplicationScope private val coroutineScope: CoroutineScope,
     private val carPropertyManager: CarPropertyManager,
+    private val seatSharedPref: SharedPreferences
 ) : BaseUseCase {
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
@@ -257,6 +289,35 @@ class SeatRow1RightUseCase @Inject constructor(
         } catch (e: IllegalArgumentException) {
             Logger.e("set Right Seat Tilt fail", e)
         }
+    }
+
+    private fun toggleSeatTilt(value: Int) {
+        try {
+            carPropertyManager.setIntProperty(
+                SEAT_TILT_POS,
+                SEAT_ROW_1_RIGHT,
+                value
+            )
+        } catch (e: IllegalArgumentException) {
+            Logger.e("set Right Seat Tilt fail", e)
+        }
+    }
+
+    fun toggleSeatMemoryPlus() {
+        with(seatSharedPref.edit()) {
+            putInt(
+                "save_row_1_right_seat_position_key",
+                carPropertyManager.getIntProperty(
+                    SEAT_TILT_POS,
+                    SEAT_ROW_1_RIGHT
+                )
+            )
+            apply()
+        }
+    }
+
+    fun toggleSeatMemory1() {
+        toggleSeatTilt(seatSharedPref.getInt("save_row_1_right_seat_position_key", SEAT_UNKNOWN))
     }
 
     override fun onCleared() {
