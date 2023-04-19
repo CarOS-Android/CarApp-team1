@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.item.Item
+import com.thoughtworks.blindhmi.ui.composable.ItemDsl
 import com.thoughtworks.blindhmi.ui.composable.center
 import com.thoughtworks.blindhmi.ui.composable.checkbox.ComposeBlindHMICheckBoxGroup
 import com.thoughtworks.blindhmi.ui.composable.indicator
@@ -36,7 +37,6 @@ fun HvacCheckBoxGroup() {
     val viewModel: HvacCheckBoxViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
     var checkedSet by remember { mutableStateOf(setOf<Int>()) }
-
     ComposeBlindHMICheckBoxGroup(
         modifier = Modifier
             .width(dimensionResource(id = CAR_UIR.dimen.dimension_220))
@@ -106,6 +106,7 @@ private fun createItem(
         this.imageRes = imageRes
         this.checked = false
         this.label = label
+        this.itemType = ItemDsl.ItemType.CHECK_BOX
         size = context.resources.getDimensionPixelSize(com.thoughtworks.car.ui.R.dimen.dimension_28)
     }
 }
