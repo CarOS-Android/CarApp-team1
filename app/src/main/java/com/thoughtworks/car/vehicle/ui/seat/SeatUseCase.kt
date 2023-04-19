@@ -22,14 +22,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+enum class SeatMemoryPresetSlots {
+    FIRST_SLOT,
+    SECOND_SLOT,
+    THIRD_SLOT
+}
+
 data class SeatUiState(
     val seatArea: Int = SEAT_UNKNOWN,
     val seatHeatingCoolingValue: Int = 0,
     val massageLevel: Int = 1,
-    val seatMemory1State: Boolean = false,
-    val seatMemory2State: Boolean = false,
-    val seatMemory3State: Boolean = false,
-    val seatMemoryPlusState: Boolean = false,
+    val saveSeatPositionState: Boolean = false,
+    val seatMemoryPresetSlotState: Int = 0
 )
 
 data class SeatHeatingCoolingState(
@@ -41,10 +45,17 @@ data class SeatHeatingCoolingState(
     val onClick: () -> Unit
 )
 
-data class SeatMemoryState(
+data class SeatMemoryPresetSlotState(
     @DrawableRes val iconOn: Int,
     @DrawableRes val iconOff: Int,
-    val status: Boolean,
+    val number: Int,
+    val onClick: () -> Unit
+)
+
+data class SaveSeatPosition2MemoryState(
+    @DrawableRes val iconOn: Int,
+    @DrawableRes val iconOff: Int,
+    val canSavePosition: Boolean,
     val onClick: () -> Unit
 )
 
@@ -57,12 +68,16 @@ open class SeatUseCase(
     private val _seatAreaState: MutableStateFlow<Int> = MutableStateFlow(SEAT_UNKNOWN)
     private val _seatHeatingCoolingState: MutableStateFlow<Int> = MutableStateFlow(0)
     private val _seatTiltState: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _saveSeatPositionState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _seatMemoryPresetSlotState: MutableStateFlow<Int> = MutableStateFlow(0)
     val uiState: StateFlow<SeatUiState> = combine(
-        _seatAreaState, _seatHeatingCoolingState
-    ) { _, seatHeatingCoolingState ->
+        _seatAreaState, _seatHeatingCoolingState, _saveSeatPositionState, _seatMemoryPresetSlotState
+    ) { _, seatHeatingCoolingState, saveSeatPositionState, seatMemoryPresetSlotState ->
         SeatUiState(
             seatArea = seatArea,
-            seatHeatingCoolingValue = seatHeatingCoolingState
+            seatHeatingCoolingValue = seatHeatingCoolingState,
+            saveSeatPositionState = saveSeatPositionState,
+            seatMemoryPresetSlotState = seatMemoryPresetSlotState
         )
     }.stateIn(
         coroutineScope,
@@ -148,6 +163,7 @@ open class SeatUseCase(
                 seatArea,
                 _seatTiltState.value + 1
             )
+            _seatMemoryPresetSlotState.value = 0
         } catch (e: IllegalArgumentException) {
             Logger.e("set Right Seat Tilt fail", e)
         }
@@ -166,25 +182,31 @@ open class SeatUseCase(
     }
 
     fun toggleSeatMemoryPlus() {
-        with(seatSharedPref.edit()) {
-            putInt(
-                "save_seat_area_${seatArea}_tilt_position_key",
-                carPropertyManager.getIntProperty(
-                    SEAT_TILT_POS,
-                    seatArea
-                )
-            )
-            apply()
-        }
+        _saveSeatPositionState.value = _saveSeatPositionState.value.not()
     }
 
-    fun toggleSeatMemory1() {
-        toggleSeatTilt(
-            seatSharedPref.getInt(
-                "save_seat_area_${seatArea}_tilt_position_key",
-                SEAT_UNKNOWN
+    fun toggleSeatMemoryPresetSlot(slot: Int) {
+        if (_saveSeatPositionState.value) {
+            with(seatSharedPref.edit()) {
+                putInt(
+                    "save_seat_area_${seatArea}_${slot}_tilt_position_key",
+                    carPropertyManager.getIntProperty(
+                        SEAT_TILT_POS,
+                        seatArea
+                    )
+                )
+                apply()
+            }
+            _saveSeatPositionState.value = false
+        } else {
+            toggleSeatTilt(
+                seatSharedPref.getInt(
+                    "save_seat_area_${seatArea}_${slot}_tilt_position_key",
+                    SEAT_UNKNOWN
+                )
             )
-        )
+        }
+        _seatMemoryPresetSlotState.value = slot
     }
 
     override fun onCleared() {

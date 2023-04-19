@@ -17,6 +17,7 @@ import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionControlView
 import com.thoughtworks.car.vehicle.ui.aircondition.AirConditionPanelView
 import com.thoughtworks.car.vehicle.ui.aircondition.FragranceView
 import com.thoughtworks.car.vehicle.ui.atmospherelight.AtmosphereLightView
+import com.thoughtworks.car.vehicle.ui.seat.SeatMemoryPresetSlots
 import com.thoughtworks.car.vehicle.ui.seat.SeatView
 
 @Composable
@@ -51,10 +52,24 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleSeatCooling = { viewModel.seatRow1LeftUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1LeftUseCase.toggleSeatHeating() },
                         toggleSeatTilt = { viewModel.seatRow1LeftUseCase.toggleSeatTilt() },
-                        toggleSeatMemory1 = { viewModel.seatRow1LeftUseCase.toggleSeatMemory1() },
-                        toggleSeatMemory2 = {},
-                        toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = { viewModel.seatRow1LeftUseCase.toggleSeatMemoryPlus() }
+                        toggleSeatMemory1 = {
+                            viewModel.seatRow1LeftUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.FIRST_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemory2 = {
+                            viewModel.seatRow1LeftUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.SECOND_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemory3 = {
+                            viewModel.seatRow1LeftUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.THIRD_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemoryPlus = {
+                            viewModel.seatRow1LeftUseCase.toggleSeatMemoryPlus()
+                        }
                     )
                     Spacer(modifier = Modifier.width(40.dp))
                     SeatView(
@@ -63,10 +78,24 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                         toggleSeatCooling = { viewModel.seatRow1RightUseCase.toggleSeatCooling() },
                         toggleSeatHeating = { viewModel.seatRow1RightUseCase.toggleSeatHeating() },
                         toggleSeatTilt = { viewModel.seatRow1RightUseCase.toggleSeatTilt() },
-                        toggleSeatMemory1 = { viewModel.seatRow1RightUseCase.toggleSeatMemory1() },
-                        toggleSeatMemory2 = {},
-                        toggleSeatMemory3 = {},
-                        toggleSeatMemoryPlus = { viewModel.seatRow1RightUseCase.toggleSeatMemoryPlus() }
+                        toggleSeatMemory1 = {
+                            viewModel.seatRow1RightUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.FIRST_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemory2 = {
+                            viewModel.seatRow1RightUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.SECOND_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemory3 = {
+                            viewModel.seatRow1RightUseCase.toggleSeatMemoryPresetSlot(
+                                SeatMemoryPresetSlots.THIRD_SLOT.ordinal + 1
+                            )
+                        },
+                        toggleSeatMemoryPlus = {
+                            viewModel.seatRow1RightUseCase.toggleSeatMemoryPlus()
+                        }
                     )
                 }
             }
