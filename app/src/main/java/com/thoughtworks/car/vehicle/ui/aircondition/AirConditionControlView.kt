@@ -35,16 +35,16 @@ fun AirConditionControlView(
     )
     Spacer(modifier = Modifier.height(15.dp))
     AirConditionFeatureButton(
-        iconOn = R.drawable.ic_ac_off_bg,
+        iconOn = R.drawable.ic_ac_on_bg,
         iconOff = R.drawable.ic_ac_off_bg,
-        status = true,
+        status = false,
         onClick = {}
     )
     Spacer(modifier = Modifier.height(15.dp))
     AirConditionFeatureButton(
-        iconOn = R.drawable.ic_ac_auto_off_bg,
+        iconOn = R.drawable.ic_ac_auto_on_bg,
         iconOff = R.drawable.ic_ac_auto_off_bg,
-        status = true,
+        status = false,
         onClick = {}
     )
     Spacer(modifier = Modifier.height(15.dp))
@@ -64,7 +64,9 @@ fun AirConditionFeatureButton(
     onClick: () -> Unit
 ) {
     Button(
-        modifier = Modifier.size(116.dp).offset(y = -20.dp),
+        modifier = Modifier
+            .size(116.dp)
+            .offset(y = -20.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(
                 id = com.thoughtworks.car.ui.R.color.black

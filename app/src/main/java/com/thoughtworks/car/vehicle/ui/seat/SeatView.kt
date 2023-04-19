@@ -96,30 +96,31 @@ fun SeatView(
     )
 
     val seatMemories = listOf(
-        SeatMemoryState(
-            iconOn = R.drawable.ic_seat_memory_1,
-            iconOff = R.drawable.ic_seat_memory_1,
-            status = uiState.seatMemory1State,
+        SeatMemoryPresetSlotState(
+            iconOn = R.drawable.ic_seat_memory_1_on,
+            iconOff = R.drawable.ic_seat_memory_1_off,
+            number = uiState.seatMemoryPresetSlotState,
             onClick = toggleSeatMemory1
         ),
-        SeatMemoryState(
-            iconOn = R.drawable.ic_seat_memory_2,
-            iconOff = R.drawable.ic_seat_memory_2,
-            status = uiState.seatMemory2State,
+        SeatMemoryPresetSlotState(
+            iconOn = R.drawable.ic_seat_memory_2_on,
+            iconOff = R.drawable.ic_seat_memory_2_off,
+            number = uiState.seatMemoryPresetSlotState,
             onClick = toggleSeatMemory2
         ),
-        SeatMemoryState(
-            iconOn = R.drawable.ic_seat_memory_3,
-            iconOff = R.drawable.ic_seat_memory_3,
-            status = uiState.seatMemory3State,
+        SeatMemoryPresetSlotState(
+            iconOn = R.drawable.ic_seat_memory_3_on,
+            iconOff = R.drawable.ic_seat_memory_3_off,
+            number = uiState.seatMemoryPresetSlotState,
             onClick = toggleSeatMemory3
-        ),
-        SeatMemoryState(
-            iconOn = R.drawable.ic_seat_memory_plus,
-            iconOff = R.drawable.ic_seat_memory_plus,
-            status = uiState.seatMemoryPlusState,
-            onClick = toggleSeatMemoryPlus
         )
+    )
+
+    val saveSeatPosition2MemoryState = SaveSeatPosition2MemoryState(
+        iconOn = R.drawable.ic_seat_memory_plus_on,
+        iconOff = R.drawable.ic_seat_memory_plus_off,
+        canSavePosition = uiState.saveSeatPositionState,
+        onClick = toggleSeatMemoryPlus
     )
 
     Card(
@@ -179,13 +180,23 @@ fun SeatView(
                     for ((index, item) in seatMemories.withIndex()) {
                         SeatMemoryButton(
                             modifier = Modifier
-                                .offset(x = if (index > 0) (SEAT_FEATURE_BUTTON_OFFSET * index).dp else 0.dp),
+                                .offset(x = (SEAT_FEATURE_BUTTON_OFFSET * index).dp),
                             iconOn = item.iconOn,
                             iconOff = item.iconOff,
-                            status = item.status
+                            status = item.number == index + 1
                         ) {
                             item.onClick()
                         }
+                    }
+                    SeatMemoryButton(
+                        modifier = Modifier.offset(
+                            x = (SEAT_FEATURE_BUTTON_OFFSET * seatMemories.size).dp
+                        ),
+                        iconOn = saveSeatPosition2MemoryState.iconOn,
+                        iconOff = saveSeatPosition2MemoryState.iconOff,
+                        status = saveSeatPosition2MemoryState.canSavePosition
+                    ) {
+                        saveSeatPosition2MemoryState.onClick()
                     }
                 }
             }
