@@ -2,17 +2,19 @@ package com.thoughtworks.car
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
-import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import com.thoughtworks.ark.router.Router
 import com.thoughtworks.ark.router.annotation.Scheme
+import com.thoughtworks.car.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @Scheme(Schemes.MAIN)
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val navView by lazy { findViewById<ChipNavigationBar>(R.id.navigationBar) }
+    private lateinit var binding: ActivityMainBinding
 
     private val selectedItemId by lazy {
         intent.getIntExtra(KEY_SELECTED_ITEM_ID, R.id.navigation_dashboard)
@@ -20,9 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        navView.setOnItemSelectedListener { itemId ->
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        immersive()
+        binding.navigationBar.setOnItemSelectedListener { itemId ->
             when (itemId) {
                 R.id.navigation_vehicle -> {
                     Router.scheme(Schemes.VEHICLE)
@@ -56,13 +59,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        navView.setItemSelected(selectedItemId, true)
+        binding.navigationBar.setItemSelected(selectedItemId, true)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val newSelectedItemId = intent.getIntExtra(KEY_SELECTED_ITEM_ID, R.id.navigation_dashboard)
-        navView.setItemSelected(newSelectedItemId, true)
+        binding.navigationBar.setItemSelected(newSelectedItemId, true)
+    }
+
+    private fun immersive() {
+        window.insetsController?.let {
+            it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            window.navigationBarColor = getColor(android.R.color.transparent)
+            it.hide(WindowInsets.Type.navigationBars())
+        }
     }
 
     companion object {

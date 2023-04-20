@@ -26,7 +26,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Theme.colors.background)
-            .padding(horizontal = 73.dp, vertical = 60.dp)
+            .padding(horizontal = 36.dp, vertical = 60.dp)
     ) {
         Row(modifier = Modifier.weight(AIR_CONDITION_VIEW_WEIGHT)) {
             Column(modifier = Modifier.weight(AIR_CONDITION_CONTROL_VIEW_WEIGHT)) {
@@ -114,5 +114,5 @@ private const val AIR_CONDITION_CONTROL_VIEW_WEIGHT = 1f
 private const val AIR_CONDITION_PANEL_VIEW_WEIGHT = 5f
 private const val FRAGRANCE_VIEW_WEIGHT = 3f
 
-private const val SEAT_VIEW_WEIGHT = 9F
-private const val ATMOSPHERE_LIGHT_VIEW_WEIGHT = 2F
+private const val SEAT_VIEW_WEIGHT = 22F
+private const val ATMOSPHERE_LIGHT_VIEW_WEIGHT = 6F
