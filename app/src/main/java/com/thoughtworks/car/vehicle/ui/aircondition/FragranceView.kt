@@ -1,5 +1,6 @@
 package com.thoughtworks.car.vehicle.ui.aircondition
 
+import android.car.VehicleAreaSeat
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -23,7 +24,6 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.item
 import com.thoughtworks.blindhmi.ui.composable.radio.ComposeBlindHMIRadioGroup
 import com.thoughtworks.car.R
-import com.thoughtworks.car.core.logging.Logger
 import com.thoughtworks.car.ui.R.dimen as CAR_UIR
 
 const val FLOAT_360 = 360f
@@ -48,16 +48,21 @@ fun FragranceView(modifier: Modifier = Modifier) {
             )
         }
         Column {
-            FragrancePanel(uiState.mainDrivingSeat)
-            FragrancePanel(uiState.copilotDrivingSeat)
-            FragrancePanel(uiState.rearSeat)
+            FragrancePanel(uiState.mainDrivingSeat) { value ->
+                viewModel.changeMode(value, VehicleAreaSeat.SEAT_ROW_1_LEFT)
+            }
+            FragrancePanel(uiState.copilotDrivingSeat) { value ->
+                viewModel.changeMode(value, VehicleAreaSeat.SEAT_ROW_1_RIGHT)
+            }
+            FragrancePanel(uiState.rearSeat) { value ->
+                viewModel.changeMode(value, VehicleAreaSeat.SEAT_ROW_2_CENTER)
+            }
         }
     }
 }
 
 @Composable
-fun FragrancePanel(currentSelection: FRAGRANCE) {
-
+fun FragrancePanel(currentSelection: FRAGRANCE, changeMode: (Int) -> Unit) {
     val context = LocalContext.current
     ComposeBlindHMIRadioGroup(
         centerBackgroundRadius = dimensionResource(id = CAR_UIR.dimension_80),
@@ -88,13 +93,13 @@ fun FragrancePanel(currentSelection: FRAGRANCE) {
         border = {
             border(context) {
                 imageRes = R.drawable.img_fragrance_border
-                radius =
-                    resources.getDimensionPixelSize(com.thoughtworks.car.ui.R.dimen.dimension_72)
+                radius = resources.getDimensionPixelSize(CAR_UIR.dimension_72)
                 drawOrder = getDrawOrder() - 1
             }
         },
-        onItemSelected = {
-            Logger.i("onItemSelected $it")
+        onItemSelected = { item ->
+            val fragrance = FRAGRANCE.values().find { it.name == item.getLabel() } ?: FRAGRANCE.STAR
+            changeMode(fragrance.value)
         }
     )
 }

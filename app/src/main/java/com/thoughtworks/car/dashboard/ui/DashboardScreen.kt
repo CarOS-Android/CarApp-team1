@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.car.dashboard.CenterAreaState
 import com.thoughtworks.car.dashboard.DashboardViewModel
@@ -91,7 +92,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = viewModel()) {
                             viewModel.parkingBrakeUseCase.toggleParkingBrake()
                         }
                     )
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.height(40.dp))
                     AutoHoldView(
                         autoHoldUiState = viewModel.autoHoldUseCase.uiState,
                         toggleAutoHold = { viewModel.autoHoldUseCase.toggleAutoHold() }
