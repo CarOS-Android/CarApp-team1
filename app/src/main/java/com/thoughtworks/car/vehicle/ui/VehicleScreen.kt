@@ -32,7 +32,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
             Column(modifier = Modifier.weight(AIR_CONDITION_CONTROL_VIEW_WEIGHT)) {
                 AirConditionControlView(
                     airConditionControlUiState = viewModel.airConditionControlUseCase.uiState,
-                    toggleFragranceFeature = {}
+                    toggleFragranceFeature = { viewModel.airConditionPanelUseCase.toggleFragranceSwitch() }
                 )
             }
             Spacer(modifier = Modifier.width(70.dp))
