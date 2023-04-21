@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,6 +24,7 @@ import com.thoughtworks.car.vehicle.ui.seat.SeatView
 
 @Composable
 fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
+    val uiState by viewModel.airConditionControlUseCase.uiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,10 +43,14 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
             }
             Spacer(modifier = Modifier.width(70.dp))
             Column(modifier = Modifier.weight(AIR_CONDITION_PANEL_VIEW_WEIGHT)) {
-                AirConditionPanelView()
+                if (uiState.powerState) {
+                    AirConditionPanelView()
+                }
             }
             Column(modifier = Modifier.weight(FRAGRANCE_VIEW_WEIGHT)) {
-                FragranceView()
+                if (uiState.powerState) {
+                    FragranceView()
+                }
             }
         }
         Row(modifier = Modifier.weight(SEAT_AND_LIGHT_VIEW_WEIGHT)) {
