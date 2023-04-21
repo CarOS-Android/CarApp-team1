@@ -35,7 +35,7 @@ fun VehicleScreen(viewModel: VehicleViewModel = viewModel()) {
                     toggleHvacPowerFeature = { viewModel.airConditionControlUseCase.toggleHvacPower() },
                     toggleHvacAcFeature = { viewModel.airConditionControlUseCase.toggleHvacAc() },
                     toggleHvacAutoFeature = { viewModel.airConditionControlUseCase.toggleHvacAuto() },
-                    toggleFragranceFeature = { viewModel.airConditionPanelUseCase.toggleFragranceSwitch() }
+                    toggleFragranceFeature = { viewModel.airConditionControlUseCase.toggleFragranceSwitch() }
                 )
             }
             Spacer(modifier = Modifier.width(70.dp))
