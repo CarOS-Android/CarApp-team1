@@ -53,6 +53,7 @@ fun AirConditionControlView(
     AirConditionFeatureButton(
         iconId = R.drawable.ic_ac_fragrance,
         status = uiState.fragranceState,
+        isEnable = uiState.powerState,
         onClick = { toggleFragranceFeature() }
     )
 }
