@@ -1,6 +1,7 @@
 package com.thoughtworks.car.vehicle.ui.aircondition
 
 import android.car.VehicleAreaSeat
+import android.car.VehicleAreaType
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
@@ -29,16 +30,18 @@ class AirConditionControlUseCase @Inject constructor(
     private val _powerState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _acState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _autoState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _fragranceSwitch = MutableStateFlow(false)
 
     val uiState: StateFlow<AirConditionControlUiState> = combine(
-        _powerState, _acState, _autoState
-    ) { powerState, acState, autoState ->
-        AirConditionControlUiState(powerState, acState, autoState)
+        _powerState, _acState, _autoState, _fragranceSwitch
+    ) { powerState, acState, autoState, fragranceSwitch ->
+        AirConditionControlUiState(powerState, acState, autoState, fragranceSwitch)
     }.stateIn(coroutineScope, WhileUiSubscribed, AirConditionControlUiState())
 
-    private var hvacPowerListener = carPropertyEventCallback(_powerState)
-    private var hvacAcListener = carPropertyEventCallback(_acState)
-    private var hvacAutoListener = carPropertyEventCallback(_autoState)
+    private val hvacPowerListener = carPropertyEventCallback(_powerState)
+    private val hvacAcListener = carPropertyEventCallback(_acState)
+    private val hvacAutoListener = carPropertyEventCallback(_autoState)
+    private val fragranceListener = carPropertyEventCallback(_fragranceSwitch)
 
     init {
         carPropertyManager.registerCallback(
@@ -54,6 +57,11 @@ class AirConditionControlUseCase @Inject constructor(
         carPropertyManager.registerCallback(
             hvacAutoListener,
             VehiclePropertyIds.HVAC_AUTO_ON,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+        carPropertyManager.registerCallback(
+            fragranceListener,
+            VehiclePropertyIds.FRAGRANCE_SWITCH,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
     }
@@ -83,6 +91,14 @@ class AirConditionControlUseCase @Inject constructor(
         setHvacState(VehiclePropertyIds.HVAC_AUTO_ON, _autoState)
     }
 
+    fun toggleFragranceSwitch() {
+        carPropertyManager.setBooleanProperty(
+            VehiclePropertyIds.FRAGRANCE_SWITCH,
+            VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL,
+            _fragranceSwitch.value.not()
+        )
+    }
+
     private fun setHvacState(propertyIds: Int, hvacUiState: MutableStateFlow<Boolean>) {
         carPropertyManager.setBooleanProperty(
             propertyIds,
@@ -95,6 +111,7 @@ class AirConditionControlUseCase @Inject constructor(
         carPropertyManager.unregisterCallback(hvacPowerListener)
         carPropertyManager.unregisterCallback(hvacAcListener)
         carPropertyManager.unregisterCallback(hvacAutoListener)
+        carPropertyManager.unregisterCallback(fragranceListener)
     }
 
     companion object {
