@@ -72,6 +72,7 @@ fun HvacCheckBoxGroup() {
             when (it.getLabel()) {
                 HvacOption.FRONT_WINDOW_DEFROSTER.name -> viewModel.toggleFrontWindowDefroster()
                 HvacOption.REAR_WINDOW_DEFROSTER.name -> viewModel.toggleRearWindowDefroster()
+                HvacOption.FRAGRANCE.name -> viewModel.toggleFragrance()
                 HvacOption.SIDE_MIRROR_HEAT.name -> viewModel.toggleSideMirrorHeat()
                 HvacOption.RECIRCULATION_MODE_ON.name, HvacOption.RECIRCULATION_MODE_OFF.name ->
                     viewModel.switchRecirculationModeMode()

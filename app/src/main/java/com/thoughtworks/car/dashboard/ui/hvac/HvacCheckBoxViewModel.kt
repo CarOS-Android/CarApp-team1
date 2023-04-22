@@ -2,6 +2,7 @@ package com.thoughtworks.car.dashboard.ui.hvac
 
 import android.car.VehicleAreaMirror
 import android.car.VehicleAreaSeat
+import android.car.VehicleAreaType
 import android.car.VehicleAreaWindow
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
@@ -23,12 +24,13 @@ data class HvacCheckBoxUiState(
     val isFrontWindowDefrosterOn: Boolean = false,
     val isRearWindowDefrosterOn: Boolean = false,
     val isSideMirrorHeatedOn: Boolean = false,
-    val isRecirculationOn: Boolean = false
+    val isRecirculationOn: Boolean = false,
+    val isFragranceOn: Boolean = false
 )
 
 enum class HvacOption(val resId: Int) {
     REAR_WINDOW_DEFROSTER(R.drawable.res_background_window),
-    PLACEHOLDER(R.drawable.ic_placeholder),
+    FRAGRANCE(R.drawable.res_fragrance),
     RECIRCULATION_MODE_ON(R.drawable.res_inner_loop),
     RECIRCULATION_MODE_OFF(R.drawable.res_out_loop),
     SIDE_MIRROR_HEAT(R.drawable.res_rearview_window),
@@ -44,18 +46,22 @@ class HvacCheckBoxViewModel @Inject constructor(
     private val _isRearWindowDefrosterOn: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private var _isSideMirrorHeatOn: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private var _isRecirculationModeModeOn: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private var _isFragranceOn: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     val uiState: StateFlow<HvacCheckBoxUiState> = combine(
         _isFrontWindowDefrosterOn,
         _isRearWindowDefrosterOn,
         _isSideMirrorHeatOn,
-        _isRecirculationModeModeOn
-    ) { _isForegroundWindowDefrosterOn, _isRearWindowDefrosterOn, _isSideMirrorHeatOn, _isRecirculationModeModeOn ->
+        _isRecirculationModeModeOn,
+        _isFragranceOn
+    ) { _isForegroundWindowDefrosterOn, _isRearWindowDefrosterOn,
+        _isSideMirrorHeatOn, _isRecirculationModeModeOn, _isFragranceOn ->
         HvacCheckBoxUiState(
             _isForegroundWindowDefrosterOn,
             _isRearWindowDefrosterOn,
             _isSideMirrorHeatOn,
-            _isRecirculationModeModeOn
+            _isRecirculationModeModeOn,
+            _isFragranceOn
         )
     }.stateIn(coroutineScope, WhileUiSubscribed, HvacCheckBoxUiState())
 
@@ -76,6 +82,9 @@ class HvacCheckBoxViewModel @Inject constructor(
                 VehiclePropertyIds.HVAC_RECIRC_ON -> {
                     _isRecirculationModeModeOn.value = value.value as Boolean
                 }
+                VehiclePropertyIds.FRAGRANCE_SWITCH -> {
+                    _isFragranceOn.value = value.value as Boolean
+                }
             }
         }
 
@@ -88,7 +97,8 @@ class HvacCheckBoxViewModel @Inject constructor(
         val properties = listOf(
             VehiclePropertyIds.HVAC_DEFROSTER,
             VehiclePropertyIds.HVAC_SIDE_MIRROR_HEAT,
-            VehiclePropertyIds.HVAC_RECIRC_ON
+            VehiclePropertyIds.HVAC_RECIRC_ON,
+            VehiclePropertyIds.FRAGRANCE_SWITCH
         )
 
         properties.forEach { property ->
@@ -108,6 +118,7 @@ class HvacCheckBoxViewModel @Inject constructor(
                     HvacOption.RECIRCULATION_MODE_OFF.ordinal
                 }
             )
+            if (uiState.isFragranceOn) add(HvacOption.FRAGRANCE.ordinal)
             if (uiState.isSideMirrorHeatedOn) add(HvacOption.SIDE_MIRROR_HEAT.ordinal)
             if (uiState.isFrontWindowDefrosterOn) add(HvacOption.FRONT_WINDOW_DEFROSTER.ordinal)
         }.toMutableSet()
@@ -117,7 +128,7 @@ class HvacCheckBoxViewModel @Inject constructor(
         carPropertyManager.setBooleanProperty(
             VehiclePropertyIds.HVAC_DEFROSTER,
             VehicleAreaWindow.WINDOW_FRONT_WINDSHIELD,
-            !_isFrontWindowDefrosterOn.value
+            _isFrontWindowDefrosterOn.value.not()
         )
     }
 
@@ -125,7 +136,7 @@ class HvacCheckBoxViewModel @Inject constructor(
         carPropertyManager.setBooleanProperty(
             VehiclePropertyIds.HVAC_DEFROSTER,
             VehicleAreaWindow.WINDOW_REAR_WINDSHIELD,
-            !_isRearWindowDefrosterOn.value
+            _isRearWindowDefrosterOn.value.not()
         )
     }
 
@@ -137,6 +148,14 @@ class HvacCheckBoxViewModel @Inject constructor(
         )
     }
 
+    fun toggleFragrance() {
+        carPropertyManager.setBooleanProperty(
+            VehiclePropertyIds.FRAGRANCE_SWITCH,
+            VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL,
+            _isFragranceOn.value.not()
+        )
+    }
+
     fun switchRecirculationModeMode() {
         carPropertyManager.setBooleanProperty(
             VehiclePropertyIds.HVAC_RECIRC_ON,
@@ -145,7 +164,7 @@ class HvacCheckBoxViewModel @Inject constructor(
                 or VehicleAreaSeat.SEAT_ROW_2_LEFT
                 or VehicleAreaSeat.SEAT_ROW_2_CENTER
                 or VehicleAreaSeat.SEAT_ROW_2_RIGHT,
-            !_isRecirculationModeModeOn.value
+            _isRecirculationModeModeOn.value.not()
         )
     }
 }
